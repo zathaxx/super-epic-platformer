@@ -29,19 +29,22 @@ fn main() {
         color: Color::PURPLE,
     };
 
-    let platforms = vec![Platform {
-        x: 150,
-        y: 340,
-        width: 100,
-        height: 20,
-        color: Color::BLACK,
-    }, Platform {
-        x: 350,
-        y: 240,
-        width: 100,
-        height: 20,
-        color: Color::BLACK, 
-    }];
+    let platforms = vec![
+        Platform {
+            x: 150,
+            y: 340,
+            width: 100,
+            height: 20,
+            color: Color::BLACK,
+        },
+        Platform {
+            x: 350,
+            y: 240,
+            width: 100,
+            height: 20,
+            color: Color::BLACK,
+        },
+    ];
 
     let mut velocity = 0;
     let acceleration = 1;
@@ -49,18 +52,15 @@ fn main() {
     let dt = 1;
 
     while !rl.window_should_close() {
-        
         let mut bottom_left = 0;
         let location = person.height + person.y + (velocity * dt);
         let orig_vel = velocity;
         let mut touching_ground = rl.get_screen_height() - person.height == person.y;
 
-
         let mut near_collision = false;
         for platform in &platforms {
             if person.x + person.width > platform.x && person.x < platform.x + platform.width {
-                if location > platform.y && location < platform.y + platform.height
-                {
+                if location > platform.y && location < platform.y + platform.height {
                     near_collision = true;
                     bottom_left = platform.y - person.height;
                     velocity = 0;
@@ -129,20 +129,14 @@ fn main() {
             person.color,
         );
 
-        d.draw_rectangle(
-            platforms[0].x,
-            platforms[0].y,
-            platforms[0].width,
-            platforms[0].height,
-            platforms[0].color,
-        );
-
-        d.draw_rectangle(
-            platforms[1].x,
-            platforms[1].y,
-            platforms[1].width,
-            platforms[1].height,
-            platforms[1].color,
-        );
+        for platform in &platforms {
+            d.draw_rectangle(
+                platform.x,
+                platform.y,
+                platform.width,
+                platform.height,
+                platform.color,
+            );
+        }
     }
 }
