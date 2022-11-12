@@ -37,7 +37,7 @@ fn main() {
         color: Color::BLACK,
     }, Platform {
         x: 350,
-        y: 340,
+        y: 240,
         width: 100,
         height: 20,
         color: Color::BLACK, 
@@ -50,17 +50,21 @@ fn main() {
 
     while !rl.window_should_close() {
         
-        let mut modifier = 0;
+        let mut bottom_left = 0;
         let location = person.height + person.y + (velocity * dt);
+        let orig_vel = velocity;
+        let mut touching_ground = rl.get_screen_height() - person.height == person.y;
+
 
         let mut near_collision = false;
         for platform in &platforms {
-            if person.x + person.width >= platform.x && person.x <= platform.x + platform.width {
-                if location > platform.y && location < platform.y + platform.height && velocity > 0
+            if person.x + person.width > platform.x && person.x < platform.x + platform.width {
+                if location > platform.y && location < platform.y + platform.height
                 {
                     near_collision = true;
-                    modifier = platform.y - person.height;
+                    bottom_left = platform.y - person.height;
                     velocity = 0;
+                    touching_ground = true;
                     break;
                 } else if location - platform.height < platform.y + person.height
                     && !(location < platform.y + platform.height)
@@ -71,11 +75,25 @@ fn main() {
             }
         }
 
+        let mut move_left = true;
+        let mut move_right = true;
+        for platform in &platforms {
+            if platform.y < person.y + person.height && platform.y + platform.height > person.y {
+                if platform.x == person.x + person.width {
+                    move_right = false;
+                    velocity = orig_vel;
+                } else if platform.x + platform.width == person.x {
+                    move_left = false;
+                    velocity = orig_vel;
+                }
+            }
+        }
+
         if person.y < rl.get_screen_height() - person.height || velocity < 0 {
             if person.height + person.y + (velocity * dt) > rl.get_screen_height() {
                 person.y = rl.get_screen_height() - person.height;
             } else if near_collision {
-                person.y = modifier;
+                person.y = bottom_left;
             } else {
                 person.y += velocity * dt;
             }
@@ -83,18 +101,20 @@ fn main() {
             t = t + dt;
         }
 
-        let touching_ground = rl.get_screen_height() - person.height == person.y;
-
         if rl.is_key_pressed(KeyboardKey::KEY_SPACE) {
             if touching_ground {
                 velocity = -20
             }
         }
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
-            person.x += 5;
+            if move_right {
+                person.x += 5;
+            }
         }
         if rl.is_key_down(KeyboardKey::KEY_LEFT) {
-            person.x -= 5;
+            if move_left {
+                person.x -= 5;
+            }
         }
 
         let mut d = rl.begin_drawing(&thread);
