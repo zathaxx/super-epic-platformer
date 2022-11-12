@@ -1,11 +1,17 @@
 use raylib::prelude::*;
 
+struct Velocity {
+    x: i32,
+    y: i32,
+}
+
 struct Character {
     x: i32,
     y: i32,
     width: i32,
     height: i32,
     color: Color,
+    velocity: Velocity,
 }
 
 struct Platform {
@@ -21,12 +27,16 @@ fn main() {
 
     rl.set_target_fps(60);
 
-    let mut person: Character = Character {
+    let mut person = Character {
         x: 320,
         y: 0,
         width: 30,
         height: 30,
         color: Color::PURPLE,
+        velocity: Velocity {
+            x: 0,
+            y: 0,
+        },
     };
 
     let platforms = vec![
@@ -46,15 +56,14 @@ fn main() {
         },
     ];
 
-    let mut velocity = 0;
     let acceleration = 1;
     let mut t = 0;
     let dt = 1;
 
     while !rl.window_should_close() {
         let mut bottom_left = 0;
-        let location = person.height + person.y + (velocity * dt);
-        let orig_vel = velocity;
+        let location = person.height + person.y + (person.velocity.y * dt);
+        let orig_vel = person.velocity.y;
         let mut touching_ground = rl.get_screen_height() - person.height == person.y;
 
         let mut near_collision = false;
@@ -63,13 +72,13 @@ fn main() {
                 if location > platform.y && location < platform.y + platform.height {
                     near_collision = true;
                     bottom_left = platform.y - person.height;
-                    velocity = 0;
+                    person.velocity.y = 0;
                     touching_ground = true;
                     break;
                 } else if location - platform.height < platform.y + person.height
                     && !(location < platform.y + platform.height)
                 {
-                    velocity = 0;
+                    person.velocity.y = 0;
                     break;
                 }
             }
@@ -81,29 +90,29 @@ fn main() {
             if platform.y < person.y + person.height && platform.y + platform.height > person.y {
                 if platform.x == person.x + person.width {
                     move_right = false;
-                    velocity = orig_vel;
+                    person.velocity.y = orig_vel;
                 } else if platform.x + platform.width == person.x {
                     move_left = false;
-                    velocity = orig_vel;
+                    person.velocity.y = orig_vel;
                 }
             }
         }
 
-        if person.y < rl.get_screen_height() - person.height || velocity < 0 {
-            if person.height + person.y + (velocity * dt) > rl.get_screen_height() {
+        if person.y < rl.get_screen_height() - person.height || person.velocity.y < 0 {
+            if person.height + person.y + (person.velocity.y * dt) > rl.get_screen_height() {
                 person.y = rl.get_screen_height() - person.height;
             } else if near_collision {
                 person.y = bottom_left;
             } else {
-                person.y += velocity * dt;
+                person.y += person.velocity.y * dt;
             }
-            velocity += acceleration * dt;
+            person.velocity.y += acceleration * dt;
             t = t + dt;
         }
 
         if rl.is_key_pressed(KeyboardKey::KEY_SPACE) {
             if touching_ground {
-                velocity = -20
+                person.velocity.y = -20
             }
         }
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
