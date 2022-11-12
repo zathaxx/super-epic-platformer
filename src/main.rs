@@ -5,20 +5,37 @@ struct Velocity {
     y: i32,
 }
 
-struct Character {
+struct Hitbox {
     x: i32,
     y: i32,
-    width: i32,
-    height: i32,
+    w: i32,
+    h: i32,
+}
+
+impl Hitbox {
+    fn collides(&self, b2: &Self) -> bool {
+        self.x + self.w > b2.x
+            && self.x < b2.x + b2.w
+            && self.y + self.h > b2.y
+            && self.y < b2.y + b2.h
+    }
+    fn touching(&self, b2: &Self) -> bool {
+        self.x + self.w >= b2.x
+            && self.x <= b2.x + b2.w
+            && self.y + self.h >= b2.y
+            && self.y <= b2.y + b2.h
+
+    }
+}
+
+struct Character {
+    hitbox: Hitbox,
     color: Color,
     velocity: Velocity,
 }
 
 struct Platform {
-    x: i32,
-    y: i32,
-    width: i32,
-    height: i32,
+    hitbox: Hitbox,
     color: Color,
 }
 
@@ -28,30 +45,33 @@ fn main() {
     rl.set_target_fps(60);
 
     let mut person = Character {
-        x: 320,
-        y: 0,
-        width: 30,
-        height: 30,
-        color: Color::PURPLE,
-        velocity: Velocity {
-            x: 0,
+        hitbox: Hitbox {
+            x: 320,
             y: 0,
+            w: 30,
+            h: 30,
         },
+        color: Color::PURPLE,
+        velocity: Velocity { x: 0, y: 0 },
     };
 
     let platforms = vec![
         Platform {
-            x: 150,
-            y: 340,
-            width: 100,
-            height: 20,
+            hitbox: Hitbox {
+                x: 150,
+                y: 340,
+                w: 100,
+                h: 20,
+            },
             color: Color::BLACK,
         },
         Platform {
-            x: 350,
-            y: 240,
-            width: 100,
-            height: 20,
+            hitbox: Hitbox {
+                x: 350,
+                y: 240,
+                w: 100,
+                h: 20,
+            },
             color: Color::BLACK,
         },
     ];
@@ -62,21 +82,24 @@ fn main() {
 
     while !rl.window_should_close() {
         let mut bottom_left = 0;
-        let location = person.height + person.y + (person.velocity.y * dt);
+        let location = person.hitbox.h + person.hitbox.y + (person.velocity.y * dt);
         let orig_vel = person.velocity.y;
-        let mut touching_ground = rl.get_screen_height() - person.height == person.y;
+        let mut touching_ground = rl.get_screen_height() - person.hitbox.h == person.hitbox.y;
 
         let mut near_collision = false;
         for platform in &platforms {
-            if person.x + person.width > platform.x && person.x < platform.x + platform.width {
-                if location > platform.y && location < platform.y + platform.height {
+            if person.hitbox.x + person.hitbox.w > platform.hitbox.x
+                && person.hitbox.x < platform.hitbox.x + platform.hitbox.w
+            {
+                if location > platform.hitbox.y && location < platform.hitbox.y + platform.hitbox.h
+                {
                     near_collision = true;
-                    bottom_left = platform.y - person.height;
+                    bottom_left = platform.hitbox.y - person.hitbox.h;
                     person.velocity.y = 0;
                     touching_ground = true;
                     break;
-                } else if location - platform.height < platform.y + person.height
-                    && !(location < platform.y + platform.height)
+                } else if location - platform.hitbox.h < platform.hitbox.y + person.hitbox.h
+                    && !(location < platform.hitbox.y + platform.hitbox.h)
                 {
                     person.velocity.y = 0;
                     break;
@@ -84,31 +107,33 @@ fn main() {
             }
         }
 
-        let mut move_left = true;
-        let mut move_right = true;
+        let next_pos = Hitbox {
+            x: person.hitbox.x + person.velocity.x,
+            y: person.hitbox.y + person.velocity.y,
+            ..person.hitbox
+        };
+
         for platform in &platforms {
-            if platform.y < person.y + person.height && platform.y + platform.height > person.y {
-                if platform.x == person.x + person.width {
-                    move_right = false;
-                    person.velocity.y = orig_vel;
-                } else if platform.x + platform.width == person.x {
-                    move_left = false;
-                    person.velocity.y = orig_vel;
-                }
+            if next_pos.collides(&platform.hitbox) {
+                person.velocity.x = 0;
+                person.velocity.y = 0;
             }
         }
 
-        if person.y < rl.get_screen_height() - person.height || person.velocity.y < 0 {
-            if person.height + person.y + (person.velocity.y * dt) > rl.get_screen_height() {
-                person.y = rl.get_screen_height() - person.height;
+        if person.hitbox.y < rl.get_screen_height() - person.hitbox.h || person.velocity.y < 0 {
+            if person.hitbox.h + person.hitbox.y + (person.velocity.y * dt) > rl.get_screen_height()
+            {
+                person.hitbox.y = rl.get_screen_height() - person.hitbox.h;
             } else if near_collision {
-                person.y = bottom_left;
+                person.hitbox.y = bottom_left;
             } else {
-                person.y += person.velocity.y * dt;
+                person.hitbox.y += person.velocity.y * dt;
             }
             person.velocity.y += acceleration * dt;
             t = t + dt;
         }
+
+        person.hitbox.x += person.velocity.x;
 
         if rl.is_key_pressed(KeyboardKey::KEY_SPACE) {
             if touching_ground {
@@ -116,13 +141,17 @@ fn main() {
             }
         }
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
-            if move_right {
-                person.x += 5;
+            if person.velocity.x < 4 {
+                person.velocity.x += 1;
+            } else {
+                person.velocity.x = 4;
             }
         }
         if rl.is_key_down(KeyboardKey::KEY_LEFT) {
-            if move_left {
-                person.x -= 5;
+            if person.velocity.x > -4 {
+                person.velocity.x -= 1;
+            } else {
+                person.velocity.x = -4;
             }
         }
 
@@ -131,19 +160,19 @@ fn main() {
         d.clear_background(Color::WHITE);
 
         d.draw_rectangle(
-            person.x,
-            person.y,
-            person.width,
-            person.height,
+            person.hitbox.x,
+            person.hitbox.y,
+            person.hitbox.w,
+            person.hitbox.h,
             person.color,
         );
 
         for platform in &platforms {
             d.draw_rectangle(
-                platform.x,
-                platform.y,
-                platform.width,
-                platform.height,
+                platform.hitbox.x,
+                platform.hitbox.y,
+                platform.hitbox.w,
+                platform.hitbox.h,
                 platform.color,
             );
         }
