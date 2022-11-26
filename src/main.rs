@@ -73,6 +73,16 @@ fn main() {
             },
             color: Color::BLACK,
         },
+        
+        Platform {
+            hitbox: Hitbox {
+                x: 0,
+                y: rl.get_screen_height() - 30,
+                w: rl.get_screen_width(),
+                h: 100,
+            },
+            color: Color::BLACK,
+        },
     ];
 
     let acceleration = 1;
@@ -82,7 +92,7 @@ fn main() {
     while !rl.window_should_close() {
         let mut bottom_left = 0;
         let next_loc = person.hitbox.y + person.hitbox.h + (person.velocity.y * dt);
-        let mut touching_ground = rl.get_screen_height() - person.hitbox.h == person.hitbox.y;
+        let mut touching_ground = false;
         let mut near_collision = false;
 
         let next_pos = Hitbox {
@@ -90,6 +100,8 @@ fn main() {
             y: person.hitbox.y + person.velocity.y,
             ..person.hitbox
         };
+
+        println!("{}", person.velocity.y);
 
         for platform in &platforms {
             // Checks if the Character is aligned with the current platform on the x-axis
@@ -117,11 +129,8 @@ fn main() {
             }
         }
 
-        if person.hitbox.y < rl.get_screen_height() - person.hitbox.h || person.velocity.y < 0 {
-            if person.hitbox.h + person.hitbox.y + (person.velocity.y * dt) > rl.get_screen_height()
-            {
-                person.hitbox.y = rl.get_screen_height() - person.hitbox.h;
-            } else if near_collision {
+        if person.hitbox.y < rl.get_screen_height() - person.hitbox.h + 100 || person.velocity.y < 0 {
+            if near_collision {
                 person.hitbox.y = bottom_left;
             } else {
                 person.hitbox.y += person.velocity.y * dt;
