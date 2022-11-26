@@ -19,6 +19,15 @@ impl Hitbox {
             && self.y + self.h > b2.y
             && self.y < b2.y + b2.h
     }
+    fn collides_right(&self, b2: &Self) -> bool {
+        self.y + self.h > b2.y
+            && self.y < b2.y + b2.h
+    }
+    fn collides_top(&self, b2: &Self) -> bool {
+        self.x + self.w > b2.x
+            && self.x < b2.x + b2.w
+            && self.y + self.h > b2.y
+    }
     fn touching(&self, b2: &Self) -> bool {
         self.x + self.w >= b2.x
             && self.x <= b2.x + b2.w
@@ -74,6 +83,15 @@ fn main() {
             },
             color: Color::BLACK,
         },
+        Platform {
+            hitbox: Hitbox {
+                x: 0,
+                y: rl.get_screen_height(),
+                w: rl.get_screen_width(),
+                h: 1,
+            },
+            color: Color::BLACK,
+        },
     ];
 
     let acceleration = 1;
@@ -84,28 +102,6 @@ fn main() {
         let mut bottom_left = 0;
         let location = person.hitbox.h + person.hitbox.y + (person.velocity.y * dt);
         let orig_vel = person.velocity.y;
-        let mut touching_ground = rl.get_screen_height() - person.hitbox.h == person.hitbox.y;
-
-        let mut near_collision = false;
-        for platform in &platforms {
-            if person.hitbox.x + person.hitbox.w > platform.hitbox.x
-                && person.hitbox.x < platform.hitbox.x + platform.hitbox.w
-            {
-                if location > platform.hitbox.y && location < platform.hitbox.y + platform.hitbox.h
-                {
-                    near_collision = true;
-                    bottom_left = platform.hitbox.y - person.hitbox.h;
-                    person.velocity.y = 0;
-                    touching_ground = true;
-                    break;
-                } else if location - platform.hitbox.h < platform.hitbox.y + person.hitbox.h
-                    && !(location < platform.hitbox.y + platform.hitbox.h)
-                {
-                    person.velocity.y = 0;
-                    break;
-                }
-            }
-        }
 
         let next_pos = Hitbox {
             x: person.hitbox.x + person.velocity.x,
@@ -113,37 +109,31 @@ fn main() {
             ..person.hitbox
         };
 
+        let mut collides = false;
         for platform in &platforms {
             if next_pos.collides(&platform.hitbox) {
-                person.velocity.x = 0;
-                //person.velocity.y = 0;
+                collides = true;
+                break;
             }
         }
 
-        if person.hitbox.y < rl.get_screen_height() - person.hitbox.h || person.velocity.y < 0 {
-            if person.hitbox.h + person.hitbox.y + (person.velocity.y * dt) > rl.get_screen_height()
-            {
-                person.hitbox.y = rl.get_screen_height() - person.hitbox.h;
-            } else if near_collision {
-                person.hitbox.y = bottom_left;
-            } else {
-                person.hitbox.y += person.velocity.y * dt;
-            }
-            person.velocity.y += acceleration * dt;
-            t = t + dt;
+        if collides {
+            person.velocity.x = 0;
+            person.velocity.y = 0;
         }
+
+        person.hitbox.y += person.velocity.y * dt;
+        person.velocity.y += acceleration * dt;
+        t = t + dt;
 
         person.hitbox.x += person.velocity.x;
 
-        let mut slowing_down = true;
-
         if rl.is_key_pressed(KeyboardKey::KEY_SPACE) {
-            if touching_ground {
+            if collides {
                 person.velocity.y = -20
             }
         }
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
-            slowing_down = false;
             if person.velocity.x < 4 {
                 person.velocity.x += 1;
             } else {
@@ -151,20 +141,10 @@ fn main() {
             }
         }
         if rl.is_key_down(KeyboardKey::KEY_LEFT) {
-            slowing_down = false;
             if person.velocity.x > -4 {
                 person.velocity.x -= 1;
             } else {
                 person.velocity.x = -4;
-            }
-        }
-
-        if slowing_down {
-            if (person.velocity.x > 0) {
-                person.velocity.x -= 1;
-            } 
-            if (person.velocity.x < 0) {
-                person.velocity.x += 1;
             }
         }
 
