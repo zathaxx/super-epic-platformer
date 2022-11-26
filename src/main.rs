@@ -19,15 +19,6 @@ impl Hitbox {
             && self.y + self.h > b2.y
             && self.y < b2.y + b2.h
     }
-    fn collides_right(&self, b2: &Self) -> bool {
-        self.y + self.h > b2.y
-            && self.y < b2.y + b2.h
-    }
-    fn collides_top(&self, b2: &Self) -> bool {
-        self.x + self.w > b2.x
-            && self.x < b2.x + b2.w
-            && self.y + self.h > b2.y
-    }
     fn touching(&self, b2: &Self) -> bool {
         self.x + self.w >= b2.x
             && self.x <= b2.x + b2.w
@@ -98,7 +89,7 @@ fn main() {
     let mut t = 0;
     let dt = 1;
 
-    while !rl.window_should_close() {
+     while !rl.window_should_close() {
         let mut bottom_left = 0;
         let location = person.hitbox.h + person.hitbox.y + (person.velocity.y * dt);
         let orig_vel = person.velocity.y;
