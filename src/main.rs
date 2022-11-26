@@ -1,42 +1,9 @@
 use raylib::prelude::*;
 
-struct Velocity {
-    x: i32,
-    y: i32,
-}
+mod level;
+mod types;
 
-struct Hitbox {
-    x: i32,
-    y: i32,
-    w: i32,
-    h: i32,
-}
-
-impl Hitbox {
-    fn collides(&self, b2: &Self) -> bool {
-        self.x + self.w > b2.x
-            && self.x < b2.x + b2.w
-            && self.y + self.h > b2.y
-            && self.y < b2.y + b2.h
-    }
-    fn touching(&self, b2: &Self) -> bool {
-        self.x + self.w >= b2.x
-            && self.x <= b2.x + b2.w
-            && self.y + self.h >= b2.y
-            && self.y <= b2.y + b2.h
-    }
-}
-
-struct Character {
-    hitbox: Hitbox,
-    color: Color,
-    velocity: Velocity,
-}
-
-struct Platform {
-    hitbox: Hitbox,
-    color: Color,
-}
+use types::*;
 
 fn main() {
     let (mut rl, thread) = raylib::init().size(640, 480).title("BOUNCY BOUNCY").build();
