@@ -116,7 +116,7 @@ fn main() {
         for platform in &platforms {
             if next_pos.collides(&platform.hitbox) {
                 person.velocity.x = 0;
-                person.velocity.y = 0;
+                //person.velocity.y = 0;
             }
         }
 
@@ -135,12 +135,15 @@ fn main() {
 
         person.hitbox.x += person.velocity.x;
 
+        let mut slowing_down = true;
+
         if rl.is_key_pressed(KeyboardKey::KEY_SPACE) {
             if touching_ground {
                 person.velocity.y = -20
             }
         }
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
+            slowing_down = false;
             if person.velocity.x < 4 {
                 person.velocity.x += 1;
             } else {
@@ -148,10 +151,20 @@ fn main() {
             }
         }
         if rl.is_key_down(KeyboardKey::KEY_LEFT) {
+            slowing_down = false;
             if person.velocity.x > -4 {
                 person.velocity.x -= 1;
             } else {
                 person.velocity.x = -4;
+            }
+        }
+
+        if slowing_down {
+            if (person.velocity.x > 0) {
+                person.velocity.x -= 1;
+            } 
+            if (person.velocity.x < 0) {
+                person.velocity.x += 1;
             }
         }
 
