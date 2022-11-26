@@ -24,7 +24,6 @@ impl Hitbox {
             && self.x <= b2.x + b2.w
             && self.y + self.h >= b2.y
             && self.y <= b2.y + b2.h
-
     }
 }
 
@@ -74,25 +73,17 @@ fn main() {
             },
             color: Color::BLACK,
         },
-        Platform {
-            hitbox: Hitbox {
-                x: 0,
-                y: rl.get_screen_height(),
-                w: rl.get_screen_width(),
-                h: 1,
-            },
-            color: Color::BLACK,
-        },
     ];
 
     let acceleration = 1;
     let mut t = 0;
     let dt = 1;
 
-     while !rl.window_should_close() {
+    while !rl.window_should_close() {
         let mut bottom_left = 0;
-        let location = person.hitbox.h + person.hitbox.y + (person.velocity.y * dt);
-        let orig_vel = person.velocity.y;
+        let next_loc = person.hitbox.y + person.hitbox.h + (person.velocity.y * dt);
+        let mut touching_ground = rl.get_screen_height() - person.hitbox.h == person.hitbox.y;
+        let mut near_collision = false;
 
         let next_pos = Hitbox {
             x: person.hitbox.x + person.velocity.x,
@@ -100,31 +91,56 @@ fn main() {
             ..person.hitbox
         };
 
-        let mut collides = false;
         for platform in &platforms {
+            // Checks if the Character is aligned with the current platform on the x-axis
+            if person.hitbox.x + person.hitbox.w > platform.hitbox.x
+                && person.hitbox.x < platform.hitbox.x + platform.hitbox.w
+            {
+                // Checks if the Character is about to hit the surface of the platform
+                if next_loc > platform.hitbox.y && next_loc < platform.hitbox.y + platform.hitbox.h
+                {
+                    near_collision = true;
+                    touching_ground = true;
+                    bottom_left = platform.hitbox.y - person.hitbox.h;
+                    person.velocity.y = 0;
+                    break;
+                } else if next_loc - platform.hitbox.h < platform.hitbox.y + person.hitbox.h
+                    && !(next_loc < platform.hitbox.y + platform.hitbox.h)
+                {
+                    person.velocity.y = 0;
+                    break;
+                }
+            }
+
             if next_pos.collides(&platform.hitbox) {
-                collides = true;
-                break;
+                person.velocity.x = 0;
             }
         }
 
-        if collides {
-            person.velocity.x = 0;
-            person.velocity.y = 0;
+        if person.hitbox.y < rl.get_screen_height() - person.hitbox.h || person.velocity.y < 0 {
+            if person.hitbox.h + person.hitbox.y + (person.velocity.y * dt) > rl.get_screen_height()
+            {
+                person.hitbox.y = rl.get_screen_height() - person.hitbox.h;
+            } else if near_collision {
+                person.hitbox.y = bottom_left;
+            } else {
+                person.hitbox.y += person.velocity.y * dt;
+            }
+            person.velocity.y += acceleration * dt;
+            t = t + dt;
         }
-
-        person.hitbox.y += person.velocity.y * dt;
-        person.velocity.y += acceleration * dt;
-        t = t + dt;
 
         person.hitbox.x += person.velocity.x;
 
+        let mut slowing_down = true;
+
         if rl.is_key_pressed(KeyboardKey::KEY_SPACE) {
-            if collides {
+            if touching_ground {
                 person.velocity.y = -20
             }
         }
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
+            slowing_down = false;
             if person.velocity.x < 4 {
                 person.velocity.x += 1;
             } else {
@@ -132,10 +148,20 @@ fn main() {
             }
         }
         if rl.is_key_down(KeyboardKey::KEY_LEFT) {
+            slowing_down = false;
             if person.velocity.x > -4 {
                 person.velocity.x -= 1;
             } else {
                 person.velocity.x = -4;
+            }
+        }
+
+        if slowing_down {
+            if (person.velocity.x > 0) {
+                person.velocity.x -= 1;
+            }
+            if (person.velocity.x < 0) {
+                person.velocity.x += 1;
             }
         }
 
