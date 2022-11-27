@@ -99,13 +99,16 @@ fn main() {
             }
         }
 
+        let width = rl.get_screen_width();
+        let height = rl.get_screen_height();
+
         let mut d = rl.begin_drawing(&thread);
 
         d.clear_background(Color::WHITE);
 
         d.draw_rectangle(
-            person.hitbox.x,
-            person.hitbox.y,
+            width / 2,
+            height / 2,
             person.hitbox.w,
             person.hitbox.h,
             person.color,
@@ -113,8 +116,8 @@ fn main() {
 
         for platform in platforms {
             d.draw_rectangle(
-                platform.hitbox.x,
-                platform.hitbox.y,
+                platform.hitbox.x - person.hitbox.x + width / 2,
+                platform.hitbox.y - person.hitbox.y + height / 2,
                 platform.hitbox.w,
                 platform.hitbox.h,
                 platform.color,
