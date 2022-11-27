@@ -1,5 +1,4 @@
 use raylib::prelude::*;
-use serde::{Deserialize, Serialize};
 
 pub struct Velocity {
     pub x: i32,
@@ -20,6 +19,7 @@ impl Hitbox {
             && self.y + self.h > b2.y
             && self.y < b2.y + b2.h
     }
+    #[allow(unused)]
     pub fn touching(&self, b2: &Self) -> bool {
         self.x + self.w >= b2.x
             && self.x <= b2.x + b2.w

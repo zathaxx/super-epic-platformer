@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::types;
 
-pub const level_one: &str = r#"
+pub const LEVEL_ONE: &str = r#"
 Level(
     grid:(640, 480),
     initial_pos: (320, 0),

@@ -10,7 +10,7 @@ fn main() {
 
     rl.set_target_fps(60);
 
-    let mut level = level::load(level::level_one);
+    let mut level = level::load(level::LEVEL_ONE);
 
     let acceleration = 1;
     let mut t = 0;
@@ -95,10 +95,10 @@ fn main() {
         }
 
         if slowing_down {
-            if (person.velocity.x > 0) {
+            if person.velocity.x > 0 {
                 person.velocity.x -= 1;
             }
-            if (person.velocity.x < 0) {
+            if person.velocity.x < 0 {
                 person.velocity.x += 1;
             }
         }
