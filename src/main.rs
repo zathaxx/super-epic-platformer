@@ -13,7 +13,6 @@ fn main() {
     let mut level = level::load(level::LEVEL_ONE);
 
     let acceleration = 1;
-    let mut t = 0;
     let dt = 1;
 
     while !rl.window_should_close() {
@@ -45,7 +44,7 @@ fn main() {
                     person.velocity.y = 0;
                     break;
                 } else if next_loc - platform.hitbox.h < platform.hitbox.y + person.hitbox.h
-                    && !(next_loc < platform.hitbox.y + platform.hitbox.h)
+                    && next_loc >= platform.hitbox.y + platform.hitbox.h
                 {
                     person.velocity.y = 0;
                     break;
@@ -65,17 +64,14 @@ fn main() {
                 person.hitbox.y += person.velocity.y * dt;
             }
             person.velocity.y += acceleration * dt;
-            t = t + dt;
         }
 
         person.hitbox.x += person.velocity.x;
 
         let mut slowing_down = true;
 
-        if rl.is_key_pressed(KeyboardKey::KEY_SPACE) {
-            if touching_ground {
+        if rl.is_key_pressed(KeyboardKey::KEY_SPACE) && touching_ground {
                 person.velocity.y = -20
-            }
         }
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
             slowing_down = false;
