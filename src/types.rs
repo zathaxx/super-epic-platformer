@@ -28,6 +28,11 @@ impl Hitbox {
     }
 }
 
+pub struct Level {
+    pub person: Character,
+    pub platforms: Vec<Platform>,
+}
+
 pub struct Character {
     pub hitbox: Hitbox,
     pub color: Color,

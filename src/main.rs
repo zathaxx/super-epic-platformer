@@ -10,53 +10,26 @@ fn main() {
 
     rl.set_target_fps(60);
 
-    let mut person = Character {
-        hitbox: Hitbox {
-            x: 320,
-            y: 0,
-            w: 30,
-            h: 30,
-        },
-        color: Color::PURPLE,
-        velocity: Velocity { x: 0, y: 0 },
-    };
+    let mut level = level::load(level::level_one);
 
-    let platforms = vec![
-        Platform {
-            hitbox: Hitbox {
-                x: 150,
-                y: 340,
-                w: 100,
-                h: 20,
-            },
-            color: Color::BLACK,
+    level.platforms.push(Platform {
+        hitbox: Hitbox {
+            x: 0,
+            y: rl.get_screen_height() - 30,
+            w: rl.get_screen_width(),
+            h: 100,
         },
-        Platform {
-            hitbox: Hitbox {
-                x: 350,
-                y: 240,
-                w: 100,
-                h: 20,
-            },
-            color: Color::BLACK,
-        },
-        
-        Platform {
-            hitbox: Hitbox {
-                x: 0,
-                y: rl.get_screen_height() - 30,
-                w: rl.get_screen_width(),
-                h: 100,
-            },
-            color: Color::BLACK,
-        },
-    ];
+        color: Color::BLACK,
+    });
 
     let acceleration = 1;
     let mut t = 0;
     let dt = 1;
 
     while !rl.window_should_close() {
+        let platforms = &mut level.platforms;
+        let person = &mut level.person;
+
         let mut bottom_left = 0;
         let next_loc = person.hitbox.y + person.hitbox.h + (person.velocity.y * dt);
         let mut touching_ground = false;
@@ -70,7 +43,7 @@ fn main() {
 
         println!("{}", person.velocity.y);
 
-        for platform in &platforms {
+        for platform in &*platforms {
             // Checks if the Character is aligned with the current platform on the x-axis
             if person.hitbox.x + person.hitbox.w > platform.hitbox.x
                 && person.hitbox.x < platform.hitbox.x + platform.hitbox.w
@@ -96,7 +69,8 @@ fn main() {
             }
         }
 
-        if person.hitbox.y < rl.get_screen_height() - person.hitbox.h + 100 || person.velocity.y < 0 {
+        if person.hitbox.y < rl.get_screen_height() - person.hitbox.h + 100 || person.velocity.y < 0
+        {
             if near_collision {
                 person.hitbox.y = bottom_left;
             } else {
@@ -153,7 +127,7 @@ fn main() {
             person.color,
         );
 
-        for platform in &platforms {
+        for platform in platforms {
             d.draw_rectangle(
                 platform.hitbox.x,
                 platform.hitbox.y,
