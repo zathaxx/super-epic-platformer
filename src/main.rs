@@ -12,16 +12,6 @@ fn main() {
 
     let mut level = level::load(level::level_one);
 
-    level.platforms.push(Platform {
-        hitbox: Hitbox {
-            x: 0,
-            y: rl.get_screen_height() - 30,
-            w: rl.get_screen_width(),
-            h: 100,
-        },
-        color: Color::BLACK,
-    });
-
     let acceleration = 1;
     let mut t = 0;
     let dt = 1;
@@ -40,8 +30,6 @@ fn main() {
             y: person.hitbox.y + person.velocity.y,
             ..person.hitbox
         };
-
-        println!("{}", person.velocity.y);
 
         for platform in &*platforms {
             // Checks if the Character is aligned with the current platform on the x-axis

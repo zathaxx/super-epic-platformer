@@ -5,6 +5,7 @@ use crate::types;
 
 pub const level_one: &str = r#"
 Level(
+    grid:(640, 480),
     initial_pos: (320, 0),
     platforms: [
         Platform(
@@ -14,6 +15,10 @@ Level(
         Platform(
             pos: (350, 240),
             size: (100, 20),
+        ),
+        Platform(
+            pos: (0, 450),
+            size: (640, 100),
         ),
     ],
 )
