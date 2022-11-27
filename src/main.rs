@@ -56,15 +56,13 @@ fn main() {
             }
         }
 
-        if person.hitbox.y < rl.get_screen_height() - person.hitbox.h + 100 || person.velocity.y < 0
-        {
-            if near_collision {
-                person.hitbox.y = bottom_left;
-            } else {
-                person.hitbox.y += person.velocity.y * dt;
-            }
-            person.velocity.y += acceleration * dt;
+
+        if near_collision {
+            person.hitbox.y = bottom_left;
+        } else {
+            person.hitbox.y += person.velocity.y * dt;
         }
+        person.velocity.y += acceleration * dt;
 
         person.hitbox.x += person.velocity.x;
 
