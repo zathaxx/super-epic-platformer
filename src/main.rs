@@ -6,7 +6,7 @@ mod types;
 use types::*;
 
 fn main() {
-    let (mut rl, thread) = raylib::init().size(1920, 1080).title("BOUNCY BOUNCY").build();
+    let (mut rl, thread) = raylib::init().size(640, 480).title("BOUNCY BOUNCY").build();
 
     rl.set_target_fps(60);
 
