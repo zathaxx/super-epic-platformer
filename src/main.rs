@@ -30,6 +30,8 @@ fn main() {
             ..person.hitbox
         };
 
+        let mut surface_speed = 4;
+
         for platform in &*platforms {
             // Checks if the Character is aligned with the current platform on the x-axis
             if person.hitbox.x + person.hitbox.w > platform.hitbox.x
@@ -42,6 +44,7 @@ fn main() {
                     touching_ground = true;
                     bottom_left = platform.hitbox.y - person.hitbox.h;
                     person.velocity.y = 0;
+                    surface_speed = platform.surface.speed;
                     break;
                 } else if next_loc - platform.hitbox.h < platform.hitbox.y + person.hitbox.h
                     && next_loc >= platform.hitbox.y + platform.hitbox.h
@@ -69,22 +72,22 @@ fn main() {
         let mut slowing_down = true;
 
         if rl.is_key_pressed(KeyboardKey::KEY_SPACE) && touching_ground {
-                person.velocity.y = -20
+                person.velocity.y = -25
         }
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
             slowing_down = false;
-            if person.velocity.x < 4 {
-                person.velocity.x += 1;
+            if person.velocity.x < 4 * surface_speed {
+                person.velocity.x += 1 * surface_speed;
             } else {
-                person.velocity.x = 4;
+                person.velocity.x = 4 * surface_speed;
             }
         }
         if rl.is_key_down(KeyboardKey::KEY_LEFT) {
             slowing_down = false;
-            if person.velocity.x > -4 {
-                person.velocity.x -= 1;
+            if person.velocity.x > -4 * surface_speed {
+                person.velocity.x -= 1 * surface_speed;
             } else {
-                person.velocity.x = -4;
+                person.velocity.x = -4 * surface_speed;
             }
         }
 

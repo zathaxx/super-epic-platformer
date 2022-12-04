@@ -42,4 +42,10 @@ pub struct Character {
 pub struct Platform {
     pub hitbox: Hitbox,
     pub color: Color,
+    pub surface: Surface,
+}
+
+#[derive(Clone)]
+pub struct Surface {
+    pub speed: i32,
 }

@@ -17,6 +17,11 @@ fn default_character(grid_x: i32, grid_y: i32) -> Character {
 pub fn level_one() -> Level {
     let grid_x = 0;
     let grid_y = 0;
+    let default = Surface {
+        speed: 4
+
+    };
+
     Level {
         person: default_character(grid_x, grid_y),
         platforms: vec![
@@ -27,6 +32,7 @@ pub fn level_one() -> Level {
                     w: 2000,
                     h: 1000,
                 },
+                surface: default.clone(),
                 color: Color::BLACK,
             },
             Platform {
@@ -36,6 +42,7 @@ pub fn level_one() -> Level {
                     w: 100,
                     h: 20,
                 },
+                surface: default.clone(),
                 color: Color::BLACK,
             },
             Platform {
@@ -45,6 +52,7 @@ pub fn level_one() -> Level {
                     w: 100,
                     h: 20,
                 },
+                surface: default.clone(),
                 color: Color::BLACK,
             },
         ],
