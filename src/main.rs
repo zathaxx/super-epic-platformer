@@ -59,7 +59,6 @@ fn main() {
             }
         }
 
-
         if near_collision {
             person.hitbox.y = bottom_left;
         } else {
@@ -72,7 +71,7 @@ fn main() {
         let mut slowing_down = true;
 
         if rl.is_key_pressed(KeyboardKey::KEY_SPACE) && touching_ground {
-                person.velocity.y = -25
+            person.velocity.y = -25
         }
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
             slowing_down = false;
