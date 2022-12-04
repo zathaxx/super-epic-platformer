@@ -92,10 +92,10 @@ fn main() {
 
         if slowing_down {
             if person.velocity.x > 0 {
-                person.velocity.x -= 1;
+                person.velocity.x -= 1 * surface_speed;
             }
             if person.velocity.x < 0 {
-                person.velocity.x += 1;
+                person.velocity.x += 1 * surface_speed;
             }
         }
 
