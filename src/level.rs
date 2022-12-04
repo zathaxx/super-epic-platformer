@@ -3,26 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::types;
 
-pub const LEVEL_ONE: &str = r#"
-Level(
-    grid:(640, 480),
-    initial_pos: (1000, 1000),
-    platforms: [
-        Platform(
-            pos: (950, 340),
-            size: (100, 20),
-        ),
-        Platform(
-            pos: (1150, 240),
-            size: (100, 20),
-        ),
-        Platform(
-            pos: (0, 450),
-            size: (2000, 1000),
-        ),
-    ],
-)
-"#;
+pub const LEVEL_ONE: &str = include_str!("../levels/01.ron");
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Level {
