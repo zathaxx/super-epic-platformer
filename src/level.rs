@@ -1,13 +1,13 @@
 use crate::types::*;
 use raylib::prelude::*;
 
-fn default_character() -> Character {
+fn default_character(grid_x: i32, grid_y: i32) -> Character {
     Character {
         hitbox: Hitbox {
             w: 30,
             h: 30,
-            x: 1000,
-            y: 1000,
+            x: grid_x + 1000,
+            y: grid_y,
         },
         color: Color::PURPLE,
         velocity: Velocity { x: 0, y: 0 },
@@ -15,33 +15,35 @@ fn default_character() -> Character {
 }
 
 pub fn level_one() -> Level {
+    let grid_x = 0;
+    let grid_y = 0;
     Level {
-        person: default_character(),
+        person: default_character(grid_x, grid_y),
         platforms: vec![
             Platform {
                 hitbox: Hitbox {
-                    x: 950,
-                    y: 340,
-                    w: 100,
-                    h: 20,
-                },
-                color: Color::BLACK,
-            },
-            Platform {
-                hitbox: Hitbox {
-                    x: 1150,
-                    y: 240,
-                    w: 100,
-                    h: 20,
-                },
-                color: Color::BLACK,
-            },
-            Platform {
-                hitbox: Hitbox {
-                    x: 0,
-                    y: 450,
+                    x: grid_x,
+                    y: grid_y,
                     w: 2000,
                     h: 1000,
+                },
+                color: Color::BLACK,
+            },
+            Platform {
+                hitbox: Hitbox {
+                    x: grid_x + 950,
+                    y: grid_y - 110,
+                    w: 100,
+                    h: 20,
+                },
+                color: Color::BLACK,
+            },
+            Platform {
+                hitbox: Hitbox {
+                    x: grid_x + 1150,
+                    y: grid_y - 210,
+                    w: 100,
+                    h: 20,
                 },
                 color: Color::BLACK,
             },
