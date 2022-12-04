@@ -10,7 +10,7 @@ fn main() {
 
     rl.set_target_fps(60);
 
-    let mut level = level::load(level::LEVEL_ONE);
+    let mut level = level::level_one();
 
     let acceleration = 1;
     let dt = 1;

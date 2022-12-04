@@ -1,53 +1,50 @@
+use crate::types::*;
 use raylib::prelude::*;
-use serde::{Deserialize, Serialize};
 
-use crate::types;
-
-pub const LEVEL_ONE: &str = include_str!("../levels/01.ron");
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct Level {
-    initial_pos: (i32, i32),
-    platforms: Vec<Platform>,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Platform {
-    pos: (i32, i32),
-    size: (i32, i32),
-}
-
-pub fn load(raw: &str) -> types::Level {
-    let level: Level = ron::from_str(raw).unwrap();
-
-    let mut platforms = vec![];
-
-    for platform in level.platforms {
-        platforms.push(types::Platform {
-            hitbox: types::Hitbox {
-                x: platform.pos.0,
-                y: platform.pos.1,
-                w: platform.size.0,
-                h: platform.size.1,
-            },
-            color: Color::BLACK,
-        })
-    }
-
-    types::Level {
-        person: types::Character {
-            hitbox: types::Hitbox {
-                x: level.initial_pos.0,
-                y: level.initial_pos.1,
-                w: 30,
-                h: 30,
-            },
-            color: Color::PURPLE,
-            velocity: types::Velocity {
-                x: 0,
-                y: 0,
-            },
+fn default_character() -> Character {
+    Character {
+        hitbox: Hitbox {
+            w: 30,
+            h: 30,
+            x: 1000,
+            y: 1000,
         },
-        platforms,
+        color: Color::PURPLE,
+        velocity: Velocity { x: 0, y: 0 },
+    }
+}
+
+pub fn level_one() -> Level {
+    Level {
+        person: default_character(),
+        platforms: vec![
+            Platform {
+                hitbox: Hitbox {
+                    x: 950,
+                    y: 340,
+                    w: 100,
+                    h: 20,
+                },
+                color: Color::BLACK,
+            },
+            Platform {
+                hitbox: Hitbox {
+                    x: 1150,
+                    y: 240,
+                    w: 100,
+                    h: 20,
+                },
+                color: Color::BLACK,
+            },
+            Platform {
+                hitbox: Hitbox {
+                    x: 0,
+                    y: 450,
+                    w: 2000,
+                    h: 1000,
+                },
+                color: Color::BLACK,
+            },
+        ],
     }
 }
