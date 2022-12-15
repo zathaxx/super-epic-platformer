@@ -33,6 +33,10 @@ fn main() {
         let mut surface_speed = 4;
 
         for platform in &*platforms {
+            if platform.surface.transparent {
+                continue;
+            }
+
             // Checks if the Character is aligned with the current platform on the x-axis
             if person.hitbox.x + person.hitbox.w > platform.hitbox.x
                 && person.hitbox.x < platform.hitbox.x + platform.hitbox.w
@@ -124,6 +128,12 @@ fn main() {
             );
         }
 
-        d.draw_text(&format!("x: {}, y: {}", person.hitbox.x, person.hitbox.y), 10, 10, 20, Color::LIGHTGRAY);
+        d.draw_text(
+            &format!("x: {}, y: {}", person.hitbox.x, person.hitbox.y),
+            10,
+            10,
+            20,
+            Color::LIGHTGRAY,
+        );
     }
 }

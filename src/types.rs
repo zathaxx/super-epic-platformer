@@ -12,6 +12,11 @@ pub struct Hitbox {
     pub h: i32,
 }
 
+pub struct Position {
+    pub x: i32,
+    pub y: i32,
+}
+
 impl Hitbox {
     pub fn collides(&self, b2: &Self) -> bool {
         self.x + self.w > b2.x
@@ -48,4 +53,5 @@ pub struct Platform {
 #[derive(Clone)]
 pub struct Surface {
     pub speed: i32,
+    pub transparent: bool,
 }
