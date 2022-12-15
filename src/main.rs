@@ -123,5 +123,7 @@ fn main() {
                 platform.color,
             );
         }
+
+        d.draw_text(&format!("x: {}, y: {}", person.hitbox.x, person.hitbox.y), 10, 10, 20, Color::LIGHTGRAY);
     }
 }
