@@ -47,4 +47,5 @@ pub struct Platform {
 pub struct Surface {
     pub speed: i32,
     pub transparent: bool,
+    pub bouncy: bool,
 }

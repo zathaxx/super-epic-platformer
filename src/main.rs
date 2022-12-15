@@ -41,8 +41,13 @@ fn main() {
                     near_collision = true;
                     touching_ground = true;
                     bottom_left = platform.hitbox.y - person.hitbox.h;
-                    person.velocity.y = 0;
                     surface_speed = platform.surface.speed;
+
+                    if platform.surface.bouncy {
+                        person.velocity.y = -person.velocity.y * 3 / 4;
+                    } else {
+                        person.velocity.y = 0;
+                    }
                 } else if person.velocity.y < 0 {
                     person.velocity.y = 0;
                 } else {

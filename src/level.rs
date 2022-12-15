@@ -20,10 +20,17 @@ pub fn level_one() -> Level {
     let default = Surface {
         speed: 4,
         transparent: false,
+        bouncy: false,
     };
     let transparent = Surface {
         speed: 4,
         transparent: true,
+        bouncy: false,
+    };
+    let bouncy = Surface {
+        speed: 4,
+        transparent: false,
+        bouncy: true,
     };
 
     Level {
@@ -68,6 +75,16 @@ pub fn level_one() -> Level {
                 },
                 surface: default.clone(),
                 color: Color::BLACK,
+            },
+            Platform {
+                hitbox: Hitbox {
+                    x: grid_x + 1350,
+                    y: grid_y - 210,
+                    w: 100,
+                    h: 20,
+                },
+                surface: bouncy.clone(),
+                color: Color::GREEN,
             },
         ],
     }
