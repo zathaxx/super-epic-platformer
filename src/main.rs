@@ -20,7 +20,7 @@ fn main() {
         let person = &mut level.person;
 
         let mut bottom_left = 0;
-        let next_loc = person.hitbox.y + person.hitbox.h + (person.velocity.y * dt);
+        let next_y = person.hitbox.y + person.hitbox.h + (person.velocity.y * dt);
         let mut touching_ground = false;
         let mut near_collision = false;
 
@@ -36,30 +36,18 @@ fn main() {
             if platform.surface.transparent {
                 continue;
             }
-
-            // Checks if the Character is aligned with the current platform on the x-axis
-            if person.hitbox.x + person.hitbox.w > platform.hitbox.x
-                && person.hitbox.x < platform.hitbox.x + platform.hitbox.w
-            {
-                // Checks if the Character is about to hit the surface of the platform
-                if next_loc > platform.hitbox.y && next_loc < platform.hitbox.y + platform.hitbox.h
-                {
+            if next_pos.collides(&platform.hitbox) {
+                if person.velocity.y > 0 {
                     near_collision = true;
                     touching_ground = true;
                     bottom_left = platform.hitbox.y - person.hitbox.h;
                     person.velocity.y = 0;
                     surface_speed = platform.surface.speed;
-                    break;
-                } else if next_loc - platform.hitbox.h < platform.hitbox.y + person.hitbox.h
-                    && next_loc >= platform.hitbox.y + platform.hitbox.h
-                {
+                } else if person.velocity.y < 0 {
                     person.velocity.y = 0;
-                    break;
+                } else {
+                    person.velocity.x = 0;
                 }
-            }
-
-            if next_pos.collides(&platform.hitbox) {
-                person.velocity.x = 0;
             }
         }
 

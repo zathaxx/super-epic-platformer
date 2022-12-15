@@ -34,7 +34,7 @@ impl Hitbox {
     pub fn touching_top(&self, b2: &Self) -> bool {
         self.x + self.w >= b2.x
             && self.x <= b2.x + b2.w
-            && self.y + self.h >= b2.y
+            && self.y > b2.y
             && self.y < b2.y + b2.h
     }
     pub fn touching_bottom(&self, b2: &Self) -> bool {
