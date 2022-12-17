@@ -6,7 +6,7 @@ mod types;
 use types::*;
 
 fn main() {
-    let (mut rl, thread) = raylib::init().size(640, 480).title("BOUNCY BOUNCY").build();
+    let (mut rl, thread) = raylib::init().size(1080, 720).title("BOUNCY BOUNCY").build();
 
     rl.set_target_fps(60);
 
@@ -70,6 +70,9 @@ fn main() {
         if rl.is_key_pressed(KeyboardKey::KEY_SPACE) && touching_ground {
             person.velocity.y = -25
         }
+        if rl.is_key_down(KeyboardKey::KEY_F) {
+            person.velocity.y = -10
+        }
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
             slowing_down = false;
             if person.velocity.x < 4 * surface_speed {
@@ -125,7 +128,7 @@ fn main() {
             &format!("x: {}, y: {}", person.hitbox.x, person.hitbox.y),
             10,
             10,
-            20,
+            40,
             Color::LIGHTGRAY,
         );
     }
