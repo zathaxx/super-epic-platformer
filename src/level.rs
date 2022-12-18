@@ -7,7 +7,7 @@ fn default_character(grid_x: i32, grid_y: i32) -> Character {
             w: 60,
             h: 60,
             x: grid_x + 1000,
-            y: grid_y,
+            y: grid_y - 100,
         },
         color: Color::PURPLE,
         velocity: Velocity { x: 0, y: 0 },

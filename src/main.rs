@@ -6,7 +6,10 @@ mod types;
 use types::*;
 
 fn main() {
-    let (mut rl, thread) = raylib::init().size(1080, 720).title("BOUNCY BOUNCY").build();
+    let (mut rl, thread) = raylib::init()
+        .size(1080, 720)
+        .title("BOUNCY BOUNCY")
+        .build();
 
     rl.set_target_fps(60);
 
@@ -20,7 +23,6 @@ fn main() {
         let person = &mut level.person;
 
         let mut bottom_left = 0;
-        let next_y = person.hitbox.y + person.hitbox.h + (person.velocity.y * dt);
         let mut touching_ground = false;
         let mut near_collision = false;
 
@@ -36,8 +38,9 @@ fn main() {
             if platform.surface.transparent {
                 continue;
             }
-            if next_pos.collides(&platform.hitbox) {
-                if person.velocity.y > 0 {
+            if next_pos.collides_with(&platform.hitbox) {
+                let side = next_pos.touches_side(&platform.hitbox).unwrap();
+                if side == Side::Bottom || person.hitbox.y + person.hitbox.h <= platform.hitbox.y {
                     near_collision = true;
                     touching_ground = true;
                     bottom_left = platform.hitbox.y - person.hitbox.h;
@@ -48,7 +51,9 @@ fn main() {
                     } else {
                         person.velocity.y = 0;
                     }
-                } else if person.velocity.y < 0 {
+                } else if side == Side::Top
+                    || person.hitbox.y >= platform.hitbox.y + platform.hitbox.h
+                {
                     person.velocity.y = 0;
                 } else {
                     person.velocity.x = 0;
@@ -67,7 +72,7 @@ fn main() {
 
         let mut slowing_down = true;
 
-        if rl.is_key_pressed(KeyboardKey::KEY_SPACE) && touching_ground {
+        if rl.is_key_down(KeyboardKey::KEY_SPACE) && touching_ground {
             person.velocity.y = -25
         }
         if rl.is_key_down(KeyboardKey::KEY_F) {
