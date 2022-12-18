@@ -54,6 +54,7 @@ fn main() {
                 } else if side == Side::Top
                     || person.hitbox.y >= platform.hitbox.y + platform.hitbox.h
                 {
+                    person.hitbox.y = platform.hitbox.y + platform.hitbox.h;
                     person.velocity.y = 0;
                 } else {
                     person.velocity.x = 0;
