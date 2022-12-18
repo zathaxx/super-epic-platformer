@@ -86,6 +86,26 @@ pub fn level_one() -> Level {
                 surface: bouncy.clone(),
                 color: Color::GREEN,
             },
+            Platform {
+                hitbox: Hitbox {
+                    x: grid_x + 500,
+                    y: grid_y - 420,
+                    w: 20,
+                    h: 420,
+                },
+                surface: default.clone(),
+                color: Color::BLACK,
+            },
+            Platform {
+                hitbox: Hitbox {
+                    x: grid_x + 200,
+                    y: grid_y - 200,
+                    w: 200,
+                    h: 40,
+                },
+                surface: bouncy.clone(),
+                color: Color::GREEN,
+            },
         ],
     }
 }
