@@ -36,24 +36,24 @@ impl Hitbox {
             && self.y + self.h > b2.y
             && self.y < b2.y + b2.h
     }
-    pub fn touches_side(&self, b2: &Self) -> Option<Side> {
+    pub fn touches_side(&self, b2: &Self) -> Side {
         let bottom_diff = (self.bottom() - b2.top()).abs();
         let top_diff = (self.top() - b2.bottom()).abs();
         let right_diff = (self.right() - b2.left()).abs();
         let left_diff = (self.left() - b2.right()).abs();
 
-        let mut side = Some(Side::Bottom);
+        let mut side = Side::Bottom;
         let mut n = bottom_diff;
         if top_diff < n {
-            side = Some(Side::Top);
+            side = Side::Top;
             n = top_diff;
         }
         if left_diff < n {
-            side = Some(Side::Left);
+            side = Side::Left;
             n = left_diff;
         }
         if right_diff < n {
-            side = Some(Side::Right);
+            side = Side::Right;
         }
 
         side

@@ -39,7 +39,7 @@ fn main() {
                 continue;
             }
             if next_pos.collides_with(&platform.hitbox) {
-                let side = next_pos.touches_side(&platform.hitbox).unwrap();
+                let side = next_pos.touches_side(&platform.hitbox);
                 if side == Side::Bottom || person.hitbox.y + person.hitbox.h <= platform.hitbox.y {
                     near_collision = true;
                     touching_ground = true;
