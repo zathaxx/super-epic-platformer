@@ -24,76 +24,19 @@ pub fn level_one() -> Level {
     Level {
         person: default_character(grid_x, grid_y),
         platforms: vec![
-            Platform {
-                hitbox: Hitbox {
-                    x: grid_x,
-                    y: grid_y,
-                    w: 2000,
-                    h: 1000,
-                },
-                surface: default.clone(),
-                color: Color::BLACK,
-            },
-            Platform {
-                hitbox: Hitbox {
-                    x: grid_x + 950,
-                    y: grid_y - 220,
-                    w: 200,
-                    h: 40,
-                },
-                surface: default.clone(),
-                color: Color::BLACK,
-            },
-            Platform {
-                hitbox: Hitbox {
-                    x: grid_x + 850,
-                    y: grid_y - 420,
-                    w: 200,
-                    h: 40,
-                },
-                surface: transparent.clone(),
-                color: Color::YELLOW,
-            },
-            Platform {
-                hitbox: Hitbox {
-                    x: grid_x + 1150,
-                    y: grid_y - 420,
-                    w: 200,
-                    h: 40,
-                },
-                surface: default.clone(),
-                color: Color::BLACK,
-            },
-            Platform {
-                hitbox: Hitbox {
-                    x: grid_x + 1550,
-                    y: grid_y - 420,
-                    w: 200,
-                    h: 40,
-                },
-                surface: bouncy.clone(),
-                color: Color::GREEN,
-            },
-            Platform {
-                hitbox: Hitbox {
-                    x: grid_x + 500,
-                    y: grid_y - 420,
-                    w: 20,
-                    h: 420,
-                },
-                surface: default.clone(),
-                color: Color::BLACK,
-            },
-            Platform {
-                hitbox: Hitbox {
-                    x: grid_x + 200,
-                    y: grid_y - 200,
-                    w: 200,
-                    h: 40,
-                },
-                surface: bouncy.clone(),
-                color: Color::GREEN,
-            },
+            Platform::new((grid_x, grid_y), (2000, 1000)),
+            Platform::new((grid_x + 950, grid_y - 220), (200, 40)),
+            Platform::new((grid_x + 850, grid_y - 420), (200, 40))
+                .surface(transparent)
+                .color(Color::YELLOW),
+            Platform::new((grid_x + 1150, grid_y - 420), (200, 40)),
+            Platform::new((grid_x + 1150, grid_y - 420), (200, 40))
+                .surface(bouncy)
+                .color(Color::GREEN),
+            Platform::new((grid_x + 500, grid_y - 420), (20, 420)),
+            Platform::new((grid_x + 200, grid_y - 200), (200, 40))
+                .surface(bouncy)
+                .color(Color::GREEN),
         ],
     }
 }

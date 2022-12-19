@@ -44,12 +44,8 @@ fn main() {
                     person.hitbox.y = platform.hitbox.y - person.hitbox.h;
                     surface_speed = platform.surface.speed;
 
-                    if platform.surface.bounciness != 1.0 {
-                        person.velocity.y =
-                            (-person.velocity.y as f32 * platform.surface.bounciness) as i32;
-                    } else {
-                        person.velocity.y = 0;
-                    }
+                    person.velocity.y =
+                        (-person.velocity.y as f32 * platform.surface.bounciness) as i32;
                 } else if side == Side::Top
                     || person.hitbox.y >= platform.hitbox.y + platform.hitbox.h
                 {

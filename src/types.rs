@@ -80,7 +80,30 @@ pub struct Platform {
     pub surface: Surface,
 }
 
-#[derive(Clone)]
+impl Platform {
+    pub fn new(pos: (i32, i32), size: (i32, i32)) -> Self {
+        Self {
+            hitbox: Hitbox {
+                x: pos.0,
+                y: pos.1,
+                w: size.0,
+                h: size.1,
+            },
+            color: Color::BLACK,
+            surface: Surface::new(),
+        }
+    }
+    pub fn color(mut self, color: Color) -> Self {
+        self.color = color;
+        self
+    }
+    pub fn surface(mut self, surface: Surface) -> Self {
+        self.surface = surface;
+        self
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
 pub struct Surface {
     pub speed: i32,
     pub transparent: bool,
@@ -92,7 +115,7 @@ impl Surface {
         Surface {
             speed: 4,
             transparent: false,
-            bounciness: 1.0,
+            bounciness: 0.0,
         }
     }
     pub fn speed(mut self, speed: i32) -> Self {
