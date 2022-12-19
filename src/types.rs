@@ -12,11 +12,6 @@ pub struct Hitbox {
     pub h: i32,
 }
 
-pub struct Position {
-    pub x: i32,
-    pub y: i32,
-}
-
 impl Hitbox {
     fn right(&self) -> i32 {
         self.x + self.w

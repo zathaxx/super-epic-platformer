@@ -22,7 +22,7 @@ fn main() {
         let platforms = &mut level.platforms;
         let person = &mut level.person;
         let mut touching_ground = false;
-        let mut near_collision = false;
+        let mut disable_gravity = false;
 
         let next_pos = Hitbox {
             x: person.hitbox.x + person.velocity.x,
@@ -39,7 +39,7 @@ fn main() {
             if next_pos.collides_with(&platform.hitbox) {
                 let side = next_pos.touches_side(&platform.hitbox);
                 if side == Side::Bottom || person.hitbox.y + person.hitbox.h <= platform.hitbox.y {
-                    near_collision = true;
+                    disable_gravity = true;
                     touching_ground = true;
                     person.hitbox.y = platform.hitbox.y - person.hitbox.h;
                     surface_speed = platform.surface.speed;
@@ -60,7 +60,7 @@ fn main() {
             }
         }
 
-        if !near_collision {
+        if !disable_gravity {
             person.hitbox.y += person.velocity.y * dt;
         }
 
