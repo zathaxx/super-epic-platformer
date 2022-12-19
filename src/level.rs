@@ -17,21 +17,9 @@ fn default_character(grid_x: i32, grid_y: i32) -> Character {
 pub fn level_one() -> Level {
     let grid_x = 0;
     let grid_y = 0;
-    let default = Surface {
-        speed: 4,
-        transparent: false,
-        bouncy: false,
-    };
-    let transparent = Surface {
-        speed: 4,
-        transparent: true,
-        bouncy: false,
-    };
-    let bouncy = Surface {
-        speed: 4,
-        transparent: false,
-        bouncy: true,
-    };
+    let default = Surface::new();
+    let transparent = Surface::new().transparent();
+    let bouncy = Surface::new().bounciness(0.75);
 
     Level {
         person: default_character(grid_x, grid_y),

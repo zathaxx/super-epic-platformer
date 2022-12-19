@@ -84,5 +84,27 @@ pub struct Platform {
 pub struct Surface {
     pub speed: i32,
     pub transparent: bool,
-    pub bouncy: bool,
+    pub bounciness: f32,
+}
+
+impl Surface {
+    pub fn new() -> Self {
+        Surface {
+            speed: 4,
+            transparent: false,
+            bounciness: 1.0,
+        }
+    }
+    pub fn speed(mut self, speed: i32) -> Self {
+        self.speed = speed;
+        self
+    }
+    pub fn transparent(mut self) -> Self {
+        self.transparent = true;
+        self
+    }
+    pub fn bounciness(mut self, bounciness: f32) -> Self {
+        self.bounciness = bounciness;
+        self
+    }
 }
