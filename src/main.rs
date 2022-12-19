@@ -21,8 +21,6 @@ fn main() {
     while !rl.window_should_close() {
         let platforms = &mut level.platforms;
         let person = &mut level.person;
-
-        let mut bottom_left = 0;
         let mut touching_ground = false;
         let mut near_collision = false;
 
@@ -43,7 +41,7 @@ fn main() {
                 if side == Side::Bottom || person.hitbox.y + person.hitbox.h <= platform.hitbox.y {
                     near_collision = true;
                     touching_ground = true;
-                    bottom_left = platform.hitbox.y - person.hitbox.h;
+                    person.hitbox.y = platform.hitbox.y - person.hitbox.h;
                     surface_speed = platform.surface.speed;
 
                     if platform.surface.bouncy {
@@ -62,11 +60,10 @@ fn main() {
             }
         }
 
-        if near_collision {
-            person.hitbox.y = bottom_left;
-        } else {
+        if !near_collision {
             person.hitbox.y += person.velocity.y * dt;
         }
+
         person.velocity.y += acceleration * dt;
 
         person.hitbox.x += person.velocity.x;
