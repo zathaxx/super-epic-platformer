@@ -7,7 +7,8 @@ use types::*;
 
 fn main() {
     let (mut rl, thread) = raylib::init()
-        .size(1920, 1080)
+        .size(1080, 720)
+        .resizable()
         .title("BOUNCY BOUNCY")
         .build();
 
