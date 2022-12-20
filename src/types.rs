@@ -1,3 +1,4 @@
+// will he notice before committing?
 use raylib::prelude::*;
 
 pub struct Velocity {
@@ -89,7 +90,7 @@ impl Platform {
                 w: size.0,
                 h: size.1,
             },
-            color: Color::BLACK,
+            color: Color::DARKGREEN,
             surface: Surface::new(),
         }
     }
@@ -108,6 +109,7 @@ pub struct Surface {
     pub speed: i32,
     pub transparent: bool,
     pub bounciness: f32,
+    pub teleport: Option<(i32, i32)>,
 }
 
 impl Surface {
@@ -116,6 +118,7 @@ impl Surface {
             speed: 4,
             transparent: false,
             bounciness: 0.0,
+            teleport: None,
         }
     }
     pub fn speed(mut self, speed: i32) -> Self {
@@ -128,6 +131,10 @@ impl Surface {
     }
     pub fn bounciness(mut self, bounciness: f32) -> Self {
         self.bounciness = bounciness;
+        self
+    }
+    pub fn teleport(mut self, teleport: (i32, i32)) -> Self {
+        self.teleport = Some(teleport);
         self
     }
 }

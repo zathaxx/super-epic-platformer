@@ -7,7 +7,7 @@ use types::*;
 
 fn main() {
     let (mut rl, thread) = raylib::init()
-        .size(1080, 720)
+        .size(1920, 1080)
         .title("BOUNCY BOUNCY")
         .build();
 
@@ -43,9 +43,11 @@ fn main() {
                     touching_ground = true;
                     person.hitbox.y = platform.hitbox.y - person.hitbox.h;
                     surface_speed = platform.surface.speed;
-
-                    person.velocity.y =
-                        (-person.velocity.y as f32 * platform.surface.bounciness) as i32;
+                    person.velocity.y = (-person.velocity.y as f32 * platform.surface.bounciness) as i32;
+                    if let Some(teleport) = platform.surface.teleport {
+                        person.hitbox.y = teleport.1;
+                        person.hitbox.x = teleport.0;
+                    }
                 } else if side == Side::Top
                     || person.hitbox.y >= platform.hitbox.y + platform.hitbox.h
                 {
@@ -104,7 +106,7 @@ fn main() {
 
         let mut d = rl.begin_drawing(&thread);
 
-        d.clear_background(Color::WHITE);
+        d.clear_background(Color::SKYBLUE);
 
         for platform in platforms {
             d.draw_rectangle(
