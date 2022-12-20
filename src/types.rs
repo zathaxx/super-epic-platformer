@@ -14,16 +14,16 @@ pub struct Hitbox {
 }
 
 impl Hitbox {
-    fn right(&self) -> i32 {
+    pub fn right(&self) -> i32 {
         self.x + self.w
     }
-    fn bottom(&self) -> i32 {
+    pub fn bottom(&self) -> i32 {
         self.y + self.h
     }
-    fn top(&self) -> i32 {
+    pub fn top(&self) -> i32 {
         self.y
     }
-    fn left(&self) -> i32 {
+    pub fn left(&self) -> i32 {
         self.x
     }
     pub fn collides_with(&self, b2: &Self) -> bool {

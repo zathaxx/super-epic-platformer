@@ -40,8 +40,8 @@ fn main() {
             if next_pos.collides_with(&platform.hitbox) {
                 let side = next_pos.touches_side(&platform.hitbox);
                 if (side == Side::Bottom || person.hitbox.y + person.hitbox.h <= platform.hitbox.y)
-                    && person.hitbox.x < platform.hitbox.x + platform.hitbox.w
-                    && person.hitbox.x + person.hitbox.w > platform.hitbox.x
+                    && person.hitbox.left() < platform.hitbox.right()
+                    && person.hitbox.right() > platform.hitbox.left()
                 {
                     disable_gravity = true;
                     touching_ground = true;
@@ -55,8 +55,8 @@ fn main() {
                     }
                 } else if (side == Side::Top
                     || person.hitbox.y >= platform.hitbox.y + platform.hitbox.h)
-                    && person.hitbox.x < platform.hitbox.x + platform.hitbox.w
-                    && person.hitbox.x + person.hitbox.w > platform.hitbox.x
+                    && person.hitbox.left() < platform.hitbox.right()
+                    && person.hitbox.right() > platform.hitbox.left()
                 {
                     person.hitbox.y = platform.hitbox.y + platform.hitbox.h;
                     person.velocity.y = 0;
