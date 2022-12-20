@@ -30,7 +30,7 @@ pub fn level_one() -> Level {
                 .surface(transparent)
                 .color(Color::YELLOW),
             Platform::new((grid_x + 1150, grid_y - 420), (200, 40)),
-            Platform::new((grid_x + 1150, grid_y - 420), (200, 40))
+            Platform::new((grid_x + 1550, grid_y - 420), (200, 40))
                 .surface(bouncy)
                 .color(Color::GREEN),
             Platform::new((grid_x + 500, grid_y - 420), (20, 420)),
