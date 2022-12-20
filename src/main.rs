@@ -106,14 +106,6 @@ fn main() {
 
         d.clear_background(Color::WHITE);
 
-        d.draw_rectangle(
-            width / 2,
-            height / 2,
-            person.hitbox.w,
-            person.hitbox.h,
-            person.color,
-        );
-
         for platform in platforms {
             d.draw_rectangle(
                 platform.hitbox.x - person.hitbox.x + width / 2,
@@ -130,6 +122,14 @@ fn main() {
             10,
             40,
             Color::LIGHTGRAY,
+        );
+
+        d.draw_rectangle(
+            width / 2,
+            height / 2,
+            person.hitbox.w,
+            person.hitbox.h,
+            person.color,
         );
     }
 }
