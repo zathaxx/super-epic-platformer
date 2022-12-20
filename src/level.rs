@@ -45,8 +45,12 @@ pub fn level_one() -> Level {
     { // Row 2
         let row_start = (grid_x + 100, grid_y - 2000);
         let row = vec![
-            Platform::new((row_start.0, row_start.1), (2000, 75)).color(Color::RED),    
+            Platform::new((row_start.0, row_start.1), (2000, 75)).color(Color::RED).surface(reset),    
             Platform::new((row_start.0 + 1925, row_start.1 - 300), (75, 300)),
+            Platform::new((row_start.0 + 475, row_start.1 - 300), (75, 300)),
+            Platform::new((grid_y + 100, grid_y - 2825), (50, 40)),
+            Platform::new((grid_y + 100, grid_y - 3125), (50, 40)),
+            Platform::new((grid_y + 100, grid_y - 3525), (50, 40)),
         ];
 
         platforms.extend(row);      

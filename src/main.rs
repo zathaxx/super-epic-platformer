@@ -80,7 +80,7 @@ fn main() {
             person.velocity.y = -35
         }
         if rl.is_key_down(KeyboardKey::KEY_F) {
-            person.velocity.y = -10
+            person.velocity.y = -20
         }
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
             slowing_down = false;
@@ -110,6 +110,7 @@ fn main() {
 
         let width = rl.get_screen_width();
         let height = rl.get_screen_height();
+        let mouse_pos = (rl.get_mouse_x() + person.hitbox.x - width / 2, rl.get_mouse_y() + person.hitbox.y - height / 2);
 
         let mut d = rl.begin_drawing(&thread);
 
@@ -132,6 +133,14 @@ fn main() {
             40,
             Color::LIGHTGRAY,
         );
+        d.draw_text(
+            &format!("x: {}, y: {}", mouse_pos.0, mouse_pos.1),
+            500,
+            10,
+            40,
+            Color::LIGHTGRAY,
+        );
+
 
         d.draw_rectangle(
             width / 2,
