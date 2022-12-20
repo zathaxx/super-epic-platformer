@@ -23,23 +23,34 @@ pub fn level_one() -> Level {
     let reset = Surface::new().teleport((grid_x + 1000, grid_y - 60));
 
     let mut platforms = vec![
-        //Bottom platform
+        // Bottom platform
         Platform::new((grid_x, grid_y), (4000, 1000)),
-        //Left wall
+        // Left wall
         Platform::new((grid_x, grid_y - 10000), (100, 10000)),
-        //Right wall
+        // Right wall
         Platform::new((grid_x + 3900, grid_y - 10000), (100, 10000)),
     ];
 
-    //Jumping staircase
-    let first_stair = (grid_x + 1200, grid_y - 500);
-    let stairs = vec![
-        Platform::new((first_stair.0, first_stair.1), (300, 75)),
-        Platform::new((first_stair.0 + 800, first_stair.1 - 600), (300, 75)),
-        Platform::new((first_stair.0 + 1600, first_stair.1 - 1200), (300, 75)),
-    ];
+    { // Jumping staircase
+        let stair = (grid_x + 1200, grid_y - 500);
+        let stairs = vec![
+            Platform::new((stair.0, stair.1), (300, 75)),
+            Platform::new((stair.0 + 800, stair.1 - 600), (300, 75)),
+            Platform::new((stair.0 + 1600, stair.1 - 1200), (300, 75)),
+        ];
 
-    platforms.extend(stairs);
+        platforms.extend(stairs);
+    }
+
+    { // Row 2
+        let row_start = (grid_x + 100, grid_y - 2000);
+        let row = vec![
+            Platform::new((row_start.0, row_start.1), (2000, 75)).color(Color::RED),    
+            Platform::new((row_start.0 + 1925, row_start.1 - 300), (75, 300)),
+        ];
+
+        platforms.extend(row);      
+    }
 
     Level {
         person: default_character(grid_x, grid_y),
