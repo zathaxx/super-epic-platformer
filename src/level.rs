@@ -22,32 +22,27 @@ pub fn level_one() -> Level {
     let bouncy = Surface::new().bounciness(0.75);
     let reset = Surface::new().teleport((grid_x + 1000, grid_y - 60));
 
+    let mut platforms = vec![
+        //Bottom platform
+        Platform::new((grid_x, grid_y), (4000, 1000)),
+        //Left wall
+        Platform::new((grid_x, grid_y - 10000), (100, 10000)),
+        //Right wall
+        Platform::new((grid_x + 3900, grid_y - 10000), (100, 10000)),
+    ];
+
+    //Jumping staircase
+    let first_stair = (grid_x + 1200, grid_y - 500);
+    let stairs = vec![
+        Platform::new((first_stair.0, first_stair.1), (300, 75)),
+        Platform::new((first_stair.0 + 800, first_stair.1 - 600), (300, 75)),
+        Platform::new((first_stair.0 + 1600, first_stair.1 - 1200), (300, 75)),
+    ];
+
+    platforms.extend(stairs);
+
     Level {
         person: default_character(grid_x, grid_y),
-        platforms: vec![
-            //Bottom platform
-            Platform::new((grid_x, grid_y), (4000, 1000)),
-            //Left wall
-            Platform::new((grid_x, grid_y - 10000), (100, 10000)),
-            //Right wall
-            Platform::new((grid_x + 3900, grid_y - 10000), (100, 10000)),
-            
-            
-            /*Platform::new((grid_x + 950, grid_y - 420), (200, 40)),
-            Platform::new((grid_x + 850, grid_y - 420), (200, 40))
-                .surface(transparent)
-                .color(Color::YELLOW),
-            Platform::new((grid_x + 1150, grid_y - 420), (200, 40)),
-            Platform::new((grid_x + 1550, grid_y - 420), (200, 40))
-                .surface(bouncy)
-                .color(Color::GREEN),
-            Platform::new((grid_x + 500, grid_y - 420), (20, 420)),
-            Platform::new((grid_x + 200, grid_y - 200), (200, 40))
-                .surface(bouncy)
-                .color(Color::GREEN),
-            Platform::new((grid_x + 1800, grid_y - 200), (200, 40))
-                .surface(reset)
-                .color(Color::BLUE),*/
-        ],
+        platforms,
     }
 }

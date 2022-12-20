@@ -115,9 +115,9 @@ pub struct Surface {
 impl Surface {
     pub fn new() -> Self {
         Surface {
-            speed: 4,
+            speed: 5,
             transparent: false,
-            bounciness: 0.0,
+            bounciness: 0.3,
             teleport: None,
         }
     }

@@ -31,7 +31,7 @@ fn main() {
             ..person.hitbox
         };
 
-        let mut surface_speed = 4;
+        let mut surface_speed = 5;
 
         for platform in &*platforms {
             if platform.surface.transparent {
@@ -44,7 +44,8 @@ fn main() {
                     touching_ground = true;
                     person.hitbox.y = platform.hitbox.y - person.hitbox.h;
                     surface_speed = platform.surface.speed;
-                    person.velocity.y = (-person.velocity.y as f32 * platform.surface.bounciness) as i32;
+                    person.velocity.y =
+                        (-person.velocity.y as f32 * platform.surface.bounciness) as i32;
                     if let Some(teleport) = platform.surface.teleport {
                         person.hitbox.y = teleport.1;
                         person.hitbox.x = teleport.0;
@@ -71,7 +72,7 @@ fn main() {
         let mut slowing_down = true;
 
         if rl.is_key_down(KeyboardKey::KEY_SPACE) && touching_ground {
-            person.velocity.y = -25
+            person.velocity.y = -35
         }
         if rl.is_key_down(KeyboardKey::KEY_F) {
             person.velocity.y = -10
