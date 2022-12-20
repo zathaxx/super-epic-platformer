@@ -110,7 +110,10 @@ fn main() {
 
         let width = rl.get_screen_width();
         let height = rl.get_screen_height();
-        let mouse_pos = (rl.get_mouse_x() + person.hitbox.x - width / 2, rl.get_mouse_y() + person.hitbox.y - height / 2);
+        let mouse_pos = (
+            rl.get_mouse_x() + person.hitbox.x - width / 2,
+            rl.get_mouse_y() + person.hitbox.y - height / 2,
+        );
 
         let mut d = rl.begin_drawing(&thread);
 
@@ -118,7 +121,11 @@ fn main() {
 
         for platform in platforms {
             d.draw_rectangle(
-                platform.hitbox.x - person.hitbox.x + width / 2,
+                if person.hitbox.x >= width / 2 {
+                    platform.hitbox.x - person.hitbox.x + width / 2
+                } else {
+                    platform.hitbox.x
+                },
                 platform.hitbox.y - person.hitbox.y + height / 2,
                 platform.hitbox.w,
                 platform.hitbox.h,
@@ -141,9 +148,12 @@ fn main() {
             Color::LIGHTGRAY,
         );
 
-
         d.draw_rectangle(
-            width / 2,
+            if person.hitbox.x <= width / 2 {
+                person.hitbox.x
+            } else {
+                width / 2
+            },
             height / 2,
             person.hitbox.w,
             person.hitbox.h,
