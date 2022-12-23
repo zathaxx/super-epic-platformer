@@ -126,21 +126,31 @@ fn main() {
             }
         }
 
+        let x_side = if person.hitbox.x <= screen_width / 2 {
+            XSide::Left
+        } else if person.hitbox.x >= game_width - screen_width / 2 {
+            XSide::Right
+        } else {
+            XSide::Center
+        };
+
         let bottom_offset = 50;
+        let y_side = if person.hitbox.y - bottom_offset >= -(screen_height / 2) {
+            YSide::Bottom
+        } else {
+            YSide::Center
+        };
 
         for platform in platforms {
             d.draw_rectangle(
-                if person.hitbox.x <= screen_width / 2 {
-                    platform.hitbox.x
-                } else if person.hitbox.x >= game_width - screen_width / 2 {
-                    platform.hitbox.x - (game_width - screen_width)
-                } else {
-                    platform.hitbox.x - person.hitbox.x + screen_width / 2
+                match x_side {
+                    XSide::Left => platform.hitbox.x,
+                    XSide::Right => platform.hitbox.x - (game_width - screen_width),
+                    XSide::Center => platform.hitbox.x - person.hitbox.x + screen_width / 2,
                 },
-                if person.hitbox.y - bottom_offset >= -(screen_height / 2) {
-                    platform.hitbox.y + screen_height - bottom_offset
-                } else {
-                    platform.hitbox.y - person.hitbox.y + screen_height / 2
+                match y_side {
+                    YSide::Bottom => platform.hitbox.y + screen_height - bottom_offset,
+                    YSide::Center => platform.hitbox.y - person.hitbox.y + screen_height / 2,
                 },
                 platform.hitbox.w,
                 platform.hitbox.h,
@@ -164,17 +174,14 @@ fn main() {
         );
 
         d.draw_rectangle(
-            if person.hitbox.x <= screen_width / 2 {
-                person.hitbox.x
-            } else if person.hitbox.x >= game_width - screen_width / 2 {
-                person.hitbox.x - (game_width - screen_width)
-            } else {
-                screen_width / 2
+            match x_side {
+                XSide::Left => person.hitbox.x,
+                XSide::Right => person.hitbox.x - (game_width - screen_width),
+                XSide::Center => screen_width / 2,
             },
-            if person.hitbox.y - bottom_offset >= -(screen_height / 2) {
-                    person.hitbox.y + screen_height - bottom_offset
-            } else {
-                screen_height / 2
+            match y_side {
+                YSide::Bottom => person.hitbox.y + screen_height - bottom_offset,
+                YSide::Center => screen_height / 2,
             },
             person.hitbox.w,
             person.hitbox.h,

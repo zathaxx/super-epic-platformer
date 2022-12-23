@@ -64,6 +64,19 @@ pub enum Side {
     Left,
 }
 
+#[derive(PartialEq)]
+pub enum XSide {
+    Right,
+    Left,
+    Center,
+}
+
+#[derive(PartialEq)]
+pub enum YSide {
+    Bottom,
+    Center,
+}
+
 pub struct Level {
     pub person: Character,
     pub platforms: Vec<Platform>,
