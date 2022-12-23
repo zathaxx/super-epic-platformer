@@ -108,16 +108,11 @@ fn main() {
             }
         }
 
+        // Rendering preparation starts here.
+        // TODO: consider separating into its own function.
+
         let screen_width = rl.get_screen_width();
         let screen_height = rl.get_screen_height();
-        let mouse_pos = (
-            rl.get_mouse_x() + person.hitbox.x - screen_width / 2,
-            rl.get_mouse_y() + person.hitbox.y - screen_height / 2,
-        );
-
-        let mut d = rl.begin_drawing(&thread);
-
-        d.clear_background(Color::SKYBLUE);
 
         let mut game_width = 0;
         for platform in &*platforms {
@@ -141,6 +136,9 @@ fn main() {
             YSide::Center
         };
 
+        let mut d = rl.begin_drawing(&thread);
+        d.clear_background(Color::SKYBLUE);
+
         for platform in platforms {
             d.draw_rectangle(
                 match x_side {
@@ -158,21 +156,6 @@ fn main() {
             );
         }
 
-        d.draw_text(
-            &format!("x: {}, y: {}", person.hitbox.x, person.hitbox.y),
-            10,
-            10,
-            40,
-            Color::LIGHTGRAY,
-        );
-        d.draw_text(
-            &format!("x: {}, y: {}", mouse_pos.0, mouse_pos.1),
-            500,
-            10,
-            40,
-            Color::LIGHTGRAY,
-        );
-
         d.draw_rectangle(
             match x_side {
                 XSide::Left => person.hitbox.x,
@@ -186,6 +169,14 @@ fn main() {
             person.hitbox.w,
             person.hitbox.h,
             person.color,
+        );
+
+        d.draw_text(
+            &format!("x: {}, y: {}", person.hitbox.x, person.hitbox.y),
+            10,
+            10,
+            40,
+            Color::LIGHTGRAY,
         );
     }
 }

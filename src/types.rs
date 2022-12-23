@@ -1,4 +1,3 @@
-// hi!
 use raylib::prelude::*;
 
 pub struct Velocity {
