@@ -108,25 +108,34 @@ fn main() {
             }
         }
 
-        let width = rl.get_screen_width();
-        let height = rl.get_screen_height();
+        let screen_width = rl.get_screen_width();
+        let screen_height = rl.get_screen_height();
         let mouse_pos = (
-            rl.get_mouse_x() + person.hitbox.x - width / 2,
-            rl.get_mouse_y() + person.hitbox.y - height / 2,
+            rl.get_mouse_x() + person.hitbox.x - screen_width / 2,
+            rl.get_mouse_y() + person.hitbox.y - screen_height / 2,
         );
 
         let mut d = rl.begin_drawing(&thread);
 
         d.clear_background(Color::SKYBLUE);
 
+        let mut game_width = 0;
+        for platform in &*platforms {
+            if platform.hitbox.right() > game_width {
+                game_width = platform.hitbox.right();
+            }
+        }
+
         for platform in platforms {
             d.draw_rectangle(
-                if person.hitbox.x >= width / 2 {
-                    platform.hitbox.x - person.hitbox.x + width / 2
-                } else {
+                if person.hitbox.x <= screen_width / 2 {
                     platform.hitbox.x
+                } else if person.hitbox.x >= game_width - screen_width / 2 {
+                    platform.hitbox.x - (game_width - screen_width)
+                } else {
+                    platform.hitbox.x - person.hitbox.x + screen_width / 2
                 },
-                platform.hitbox.y - person.hitbox.y + height / 2,
+                platform.hitbox.y - person.hitbox.y + screen_height / 2,
                 platform.hitbox.w,
                 platform.hitbox.h,
                 platform.color,
@@ -149,12 +158,14 @@ fn main() {
         );
 
         d.draw_rectangle(
-            if person.hitbox.x <= width / 2 {
+            if person.hitbox.x <= screen_width / 2 {
                 person.hitbox.x
+            } else if person.hitbox.x >= game_width - screen_width / 2 {
+                person.hitbox.x - (game_width - screen_width)
             } else {
-                width / 2
+                screen_width / 2
             },
-            height / 2,
+            screen_height / 2,
             person.hitbox.w,
             person.hitbox.h,
             person.color,

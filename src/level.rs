@@ -19,7 +19,7 @@ pub fn level_one() -> Level {
     let grid_y = 0;
     let default = Surface::new();
     let transparent = Surface::new().transparent();
-    let bouncy = Surface::new().bounciness(0.75);
+    let bouncy = Surface::new().bounciness(0.9);
     let reset = Surface::new().teleport((grid_x + 1000, grid_y - 60));
 
     let mut platforms = vec![
