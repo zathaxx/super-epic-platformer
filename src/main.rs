@@ -126,6 +126,8 @@ fn main() {
             }
         }
 
+        let bottom_offset = 50;
+
         for platform in platforms {
             d.draw_rectangle(
                 if person.hitbox.x <= screen_width / 2 {
@@ -135,7 +137,11 @@ fn main() {
                 } else {
                     platform.hitbox.x - person.hitbox.x + screen_width / 2
                 },
-                platform.hitbox.y - person.hitbox.y + screen_height / 2,
+                if person.hitbox.y - bottom_offset >= -(screen_height / 2) {
+                    platform.hitbox.y + screen_height - bottom_offset
+                } else {
+                    platform.hitbox.y - person.hitbox.y + screen_height / 2
+                },
                 platform.hitbox.w,
                 platform.hitbox.h,
                 platform.color,
@@ -165,7 +171,11 @@ fn main() {
             } else {
                 screen_width / 2
             },
-            screen_height / 2,
+            if person.hitbox.y - bottom_offset >= -(screen_height / 2) {
+                    person.hitbox.y + screen_height - bottom_offset
+            } else {
+                screen_height / 2
+            },
             person.hitbox.w,
             person.hitbox.h,
             person.color,
