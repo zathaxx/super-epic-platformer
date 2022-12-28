@@ -91,6 +91,7 @@ pub struct Platform {
     pub hitbox: Hitbox,
     pub color: Color,
     pub surface: Surface,
+    pub velocity: Velocity,
 }
 
 impl Platform {
@@ -104,6 +105,10 @@ impl Platform {
             },
             color: Color::DARKGREEN,
             surface: Surface::new(),
+            velocity: Velocity {
+                x: 0,
+                y: 0,
+            },
         }
     }
     pub fn color(mut self, color: Color) -> Self {
@@ -122,6 +127,7 @@ pub struct Surface {
     pub transparent: bool,
     pub bounciness: f32,
     pub teleport: Option<(i32, i32)>,
+    pub shifting: Option<((i32, i32), (i32, i32))>,
 }
 
 impl Surface {
@@ -131,6 +137,7 @@ impl Surface {
             transparent: false,
             bounciness: 0.3,
             teleport: None,
+            shifting: None,
         }
     }
     pub fn speed(mut self, speed: i32) -> Self {
@@ -147,6 +154,10 @@ impl Surface {
     }
     pub fn teleport(mut self, teleport: (i32, i32)) -> Self {
         self.teleport = Some(teleport);
+        self
+    }
+    pub fn shifting(mut self, locs: ((i32, i32), (i32, i32))) -> Self {
+        self.shifting = Some(locs);
         self
     }
 }

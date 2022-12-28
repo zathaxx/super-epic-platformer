@@ -33,10 +33,23 @@ fn main() {
 
         let mut surface_speed = 5;
 
-        for platform in &*platforms {
+        for platform in &mut *platforms {
+            // Surface-specific behavior
             if platform.surface.transparent {
                 continue;
             }
+            if let Some(locs) = platform.surface.shifting {
+                if (platform.velocity.x >= 0 && platform.hitbox.x < locs.1 .0)
+                    || (platform.velocity.y <= 0 && platform.hitbox.x < locs.0 .0)
+                {
+                    platform.velocity.x = 10;
+                } else {
+                    platform.velocity.x = -10;
+                }
+            }
+            platform.hitbox.x += platform.velocity.x;
+
+            // Detect collisions
             if next_pos.collides_with(&platform.hitbox) {
                 let side = next_pos.touches_side(&platform.hitbox);
                 if (side == Side::Bottom || person.hitbox.y + person.hitbox.h <= platform.hitbox.y)

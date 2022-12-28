@@ -21,6 +21,9 @@ pub fn level_one() -> Level {
     let transparent = Surface::new().transparent();
     let bouncy = Surface::new().bounciness(0.5);
     let reset = Surface::new().teleport((grid_x + 1000, grid_y - 60));
+    let shifting_reset = Surface::new()
+        .shifting(((grid_x + 100, grid_y), (grid_x + 3800, grid_y)))
+        .teleport((grid_x + 1000, grid_y - 60));
 
     let mut platforms = vec![
         // Bottom platform
@@ -30,6 +33,12 @@ pub fn level_one() -> Level {
         // Right wall
         Platform::new((grid_x + 3900, grid_y - 10000), (100, 10000)),
     ];
+
+    platforms.push(
+        Platform::new((grid_x + 1500, grid_y), (100, 100))
+            .surface(shifting_reset)
+            .color(Color::RED),
+    );
 
     {
         // Jumping staircase
@@ -76,7 +85,7 @@ pub fn level_one() -> Level {
         ];
 
         platforms.extend(row);
-    }    
+    }
 
     {
         // Row 4
