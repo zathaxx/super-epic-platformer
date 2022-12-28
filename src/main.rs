@@ -77,7 +77,7 @@ fn main() {
         let mut slowing_down = true;
 
         if rl.is_key_down(KeyboardKey::KEY_SPACE) && touching_ground {
-            person.velocity.y = -35
+            person.velocity.y += -30
         }
         if rl.is_key_down(KeyboardKey::KEY_F) {
             person.velocity.y = -20

@@ -19,7 +19,7 @@ pub fn level_one() -> Level {
     let grid_y = 0;
     let default = Surface::new();
     let transparent = Surface::new().transparent();
-    let bouncy = Surface::new().bounciness(0.9);
+    let bouncy = Surface::new().bounciness(0.5);
     let reset = Surface::new().teleport((grid_x + 1000, grid_y - 60));
 
     let mut platforms = vec![
@@ -59,6 +59,24 @@ pub fn level_one() -> Level {
 
         platforms.extend(row);
     }
+
+    {
+        // Row 3
+        let row_start = (grid_x + 1050, grid_y - 3525);
+        let row = vec![
+            Platform::new((row_start.0 + 500, row_start.1), (300, 75)),
+            Platform::new((row_start.0 + 800, row_start.1 - 750), (300, 75))
+                .color(Color::RED)
+                .surface(reset),
+            Platform::new((row_start.0 + 800, row_start.1 - 675), (300, 750)),
+            Platform::new((row_start.0 + 800, row_start.1 - 1100), (300, 75)),
+            Platform::new((row_start.0 + 1100, row_start.1), (1750, 75))
+                .color(Color::BLUE)
+                .surface(bouncy),
+        ];
+
+        platforms.extend(row);
+    }    
 
     Level {
         person: default_character(grid_x, grid_y),
