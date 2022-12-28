@@ -39,8 +39,8 @@ fn main() {
                 continue;
             }
             if let Some(locs) = platform.surface.shifting {
-                if (platform.velocity.x >= 0 && platform.hitbox.x < locs.1 .0)
-                    || (platform.velocity.y <= 0 && platform.hitbox.x < locs.0 .0)
+                if platform.velocity.x >= 0 && platform.hitbox.x < locs.1 .0
+                    || platform.hitbox.x < locs.0 .0
                 {
                     platform.velocity.x = 10;
                 } else {
