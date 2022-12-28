@@ -73,7 +73,9 @@ fn main() {
                 {
                     person.hitbox.y = platform.hitbox.y + platform.hitbox.h;
                     person.velocity.y = 0;
-                } else {
+                } else if person.hitbox.top() < platform.hitbox.bottom()
+                    && person.hitbox.bottom() > platform.hitbox.top()
+                {
                     person.velocity.x = 0;
                 }
             }
