@@ -78,6 +78,18 @@ pub fn level_one() -> Level {
         platforms.extend(row);
     }    
 
+    {
+        // Row 4
+        let row_start = (grid_x + 3750, grid_y - 5200);
+        let row = vec![
+            Platform::new((row_start.0, row_start.1), (150, 75)),
+            Platform::new((row_start.0 - 1000, row_start.1 - 600), (150, 75)),
+            Platform::new((row_start.0 - 3650, row_start.1), (300, 75)),
+        ];
+
+        platforms.extend(row);
+    }  
+
     Level {
         person: default_character(grid_x, grid_y),
         platforms,
