@@ -7,7 +7,7 @@ fn default_character(grid_x: i32, grid_y: i32) -> Character {
             w: 90,
             h: 180,
             x: grid_x + 1000,
-            y: grid_y - 60,
+            y: grid_y - 90,
         },
         color: Color::PURPLE,
         velocity: Velocity { x: 0, y: 0 },
@@ -20,10 +20,10 @@ pub fn level_one() -> Level {
     let default = Surface::new();
     let transparent = Surface::new().transparent();
     let bouncy = Surface::new().bounciness(0.5);
-    let reset = Surface::new().teleport((grid_x + 1000, grid_y - 60));
+    let reset = Surface::new().teleport((grid_x + 1000, grid_y - 90));
     let shifting_reset = Surface::new()
         .shifting(((grid_x + 100, grid_y), (grid_x + 3800, grid_y)))
-        .teleport((grid_x + 1000, grid_y - 60));
+        .teleport((grid_x + 1000, grid_y - 180));
 
     let mut platforms = vec![
         // Bottom platform
@@ -93,11 +93,25 @@ pub fn level_one() -> Level {
         let row = vec![
             Platform::new((row_start.0, row_start.1), (150, 75)),
             Platform::new((row_start.0 - 1000, row_start.1 - 600), (150, 75)),
+            // Stalin platform
             Platform::new((row_start.0 - 3650, row_start.1), (300, 75)),
+            Platform::new((row_start.0 - 3650, row_start.1 - 500), (300, 75)).surface(bouncy),
         ];
 
         platforms.extend(row);
-    }  
+    }
+
+    {
+        // Row 5
+        let row_start = (grid_x + 800, grid_y - 6200);
+        let row = vec![Platform::new((row_start.0, row_start.1), (150, 75))
+            .color(Color::ORANGE)
+            .surface(Surface::new().shifting(
+                ((row_start.0, row_start.1),
+                (row_start.0 + 1000, row_start.1))
+            ))];
+        platforms.extend(row);
+    }
 
     Level {
         person: default_character(grid_x, grid_y),

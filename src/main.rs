@@ -77,6 +77,11 @@ fn main() {
                     && person.hitbox.bottom() > platform.hitbox.top()
                 {
                     person.velocity.x = 0;
+                    if side == Side::Right {
+                        person.hitbox.x = platform.hitbox.left() - person.hitbox.w;
+                    } else if side == Side::Left {
+                        person.hitbox.x = platform.hitbox.right();
+                    }
                 }
             }
         }
