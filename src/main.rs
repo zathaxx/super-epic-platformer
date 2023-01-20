@@ -38,11 +38,13 @@ fn main() {
             if platform.surface.transparent {
                 continue;
             }
+            let mut going_right = false;
             if let Some(locs) = platform.surface.shifting {
                 if platform.velocity.x >= 0 && platform.hitbox.x < locs.1 .0
                     || platform.hitbox.x < locs.0 .0
                 {
                     platform.velocity.x = 10;
+                    going_right = true;
                 } else {
                     platform.velocity.x = -10;
                 }
@@ -65,6 +67,16 @@ fn main() {
                     if let Some(teleport) = platform.surface.teleport {
                         person.hitbox.y = teleport.1;
                         person.hitbox.x = teleport.0;
+                    }
+
+                    if let Some(locs) = platform.surface.shifting {
+                        if person.velocity.x == 0 {
+                            if going_right {
+                                person.hitbox.x += 10;
+                            } else {
+                                person.hitbox.x -= 10;
+                            }
+                        }
                     }
                 } else if (side == Side::Top
                     || person.hitbox.y >= platform.hitbox.y + platform.hitbox.h)
