@@ -95,7 +95,7 @@ pub fn level_one() -> Level {
             Platform::new((row_start.0 - 1000, row_start.1 - 600), (150, 75)),
             // Stalin platform
             Platform::new((row_start.0 - 3650, row_start.1), (300, 75)),
-            Platform::new((row_start.0 - 3650, row_start.1 - 500), (300, 75)).surface(bouncy),
+            Platform::new((row_start.0 - 3650, row_start.1 - 500), (300, 75)),
         ];
 
         platforms.extend(row);
