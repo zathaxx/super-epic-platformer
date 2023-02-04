@@ -105,10 +105,7 @@ impl Platform {
             },
             color: Color::DARKGREEN,
             surface: Surface::new(),
-            velocity: Velocity {
-                x: 0,
-                y: 0,
-            },
+            velocity: Velocity { x: 0, y: 0 },
         }
     }
     pub fn color(mut self, color: Color) -> Self {

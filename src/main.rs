@@ -39,17 +39,32 @@ fn main() {
                 continue;
             }
             let mut going_right = false;
+            let mut going_down = false;
             if let Some(locs) = platform.surface.shifting {
-                if platform.velocity.x >= 0 && platform.hitbox.x < locs.1 .0
-                    || platform.hitbox.x < locs.0 .0
-                {
-                    platform.velocity.x = 10;
-                    going_right = true;
-                } else {
-                    platform.velocity.x = -10;
+                if locs.0 .0 != locs.1 .0 {
+                    if platform.velocity.x >= 0 && platform.hitbox.x < locs.1 .0
+                        || platform.hitbox.x < locs.0 .0
+                    {
+                        platform.velocity.x = 10;
+                        going_right = true;
+                    } else {
+                        platform.velocity.x = -10;
+                    }
+                }
+
+                if locs.0 .1 != locs.1 .1 {
+                    if platform.velocity.y >= 0 && platform.hitbox.y < locs.1 .1
+                        || platform.hitbox.y < locs.0 .1
+                    {
+                        platform.velocity.y = 10;
+                        going_down = true;
+                    } else {
+                        platform.velocity.y = -10;
+                    }
                 }
             }
             platform.hitbox.x += platform.velocity.x;
+
 
             // Detect collisions
             if next_pos.collides_with(&platform.hitbox) {
@@ -70,11 +85,19 @@ fn main() {
                     }
 
                     if let Some(locs) = platform.surface.shifting {
-                        if person.velocity.x == 0 {
+                        if locs.0 .0 != locs.1 .0 && person.velocity.x == 0 {
                             if going_right {
                                 person.hitbox.x += 10;
                             } else {
                                 person.hitbox.x -= 10;
+                            }
+                        }
+
+                        if locs.0 .1 != locs.1 .1 && person.velocity.y == 0 {
+                            if going_down {
+                                person.hitbox.y += 10;
+                            } else {
+                                person.hitbox.y -= 10;
                             }
                         }
                     }
@@ -95,7 +118,11 @@ fn main() {
                         person.hitbox.x = platform.hitbox.right();
                     }
                 }
+
             }
+
+            // Separated from the equivalent for x for the engine's sake
+            platform.hitbox.y += platform.velocity.y;
         }
 
         if !disable_gravity {

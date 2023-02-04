@@ -93,9 +93,15 @@ pub fn level_one() -> Level {
         let row = vec![
             Platform::new((row_start.0, row_start.1), (150, 75)),
             Platform::new((row_start.0 - 1000, row_start.1 - 600), (150, 75)),
-            // Stalin platform
-            Platform::new((row_start.0 - 3650, row_start.1), (300, 75)),
-            Platform::new((row_start.0 - 3650, row_start.1 - 500), (300, 75)),
+            Platform::new((row_start.0, row_start.1 - 1000), (250, 75))
+                .color(Color::ORANGE)
+                .surface(Surface::new().shifting((
+                    (row_start.0 - 3500, row_start.1 - 1000),
+                    (row_start.0 - 1500, row_start.1 - 1000),
+                ))),
+            Platform::new((100, row_start.1 - 1300), (75, 75))
+                .color(Color::BLUE)
+                .surface(bouncy),
         ];
 
         platforms.extend(row);
@@ -103,13 +109,40 @@ pub fn level_one() -> Level {
 
     {
         // Row 5
-        let row_start = (grid_x + 800, grid_y - 6200);
-        let row = vec![Platform::new((row_start.0, row_start.1), (150, 75))
-            .color(Color::ORANGE)
-            .surface(Surface::new().shifting(
-                ((row_start.0, row_start.1),
-                (row_start.0 + 1000, row_start.1))
-            ))];
+        let row_start = (grid_x + 500, grid_y - 7500);
+        let row = vec![
+            Platform::new((row_start.0, row_start.1), (250, 75))
+                .color(Color::ORANGE)
+                .surface(Surface::new().shifting((
+                    (row_start.0, row_start.1),
+                    (row_start.0 + 2500, row_start.1),
+                ))),
+            Platform::new((row_start.0 + 800, row_start.1 - 75), (75, 75))
+                .color(Color::RED)
+                .surface(reset),
+            Platform::new((row_start.0 + 1800, row_start.1 - 75), (75, 75))
+                .color(Color::RED)
+                .surface(reset),
+            Platform::new((row_start.0 + 3250, row_start.1), (150, 75)),
+        ];
+        platforms.extend(row);
+    }
+
+    {
+        // Row 5
+        let row_start = (grid_x + 3200, grid_y - 8300);
+        let row = vec![
+            Platform::new((2500, -7000), (1400, 75))
+                .color(Color::RED)
+                .surface(reset),
+            Platform::new((row_start.0, row_start.1), (150, 75)),
+            Platform::new((row_start.0 - 200, row_start.1), (75, 75)).surface(
+                Surface::new().shifting((
+                    (row_start.0 - 200, row_start.1 - 1000),
+                    (row_start.0 - 200, row_start.1),
+                )),
+            ),
+        ];
         platforms.extend(row);
     }
 
