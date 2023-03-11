@@ -139,7 +139,7 @@ fn main() {
             person.velocity.y += -30
         }
         if rl.is_key_down(KeyboardKey::KEY_F) {
-            person.velocity.y = -20
+            person.velocity.y = -30
         }
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
             slowing_down = false;

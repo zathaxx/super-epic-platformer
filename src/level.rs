@@ -24,14 +24,17 @@ pub fn level_one() -> Level {
     let shifting_reset = Surface::new()
         .shifting(((grid_x + 100, grid_y), (grid_x + 3800, grid_y)))
         .teleport((grid_x + 1000, grid_y - 180));
+    let row6_shifting_reset = Surface::new()
+    .shifting(((grid_x + 900, grid_y - 9500), (grid_x + 2000, grid_y - 9500)))
+    .teleport((grid_x + 1000, grid_y - 180));
 
     let mut platforms = vec![
         // Bottom platform
         Platform::new((grid_x, grid_y), (4000, 1000)),
         // Left wall
-        Platform::new((grid_x, grid_y - 10000), (100, 10000)),
+        Platform::new((grid_x, grid_y - 11000), (100, 11000)),
         // Right wall
-        Platform::new((grid_x + 3900, grid_y - 10000), (100, 10000)),
+        Platform::new((grid_x + 3900, grid_y - 11000), (100, 11000)),
     ];
 
     platforms.push(
@@ -142,6 +145,41 @@ pub fn level_one() -> Level {
                     (row_start.0 - 200, row_start.1),
                 )),
             ),
+        ];
+        platforms.extend(row);
+    }
+
+
+    {
+        // Row 6
+        let row_start = (grid_x + 900, grid_y - 9500);
+        let row = vec![
+            Platform::new((row_start.0, row_start.1), (1250, 75)),
+            Platform::new((row_start.0, row_start.1), (150, 75))
+            .color(Color::RED)
+            .surface(row6_shifting_reset),
+            Platform::new((row_start.0 + 500, row_start.1- 1250), (90, 250))
+            .color(Color::RED)
+            .surface(
+                Surface::new().shifting((
+                    (row_start.0 + 500, row_start.1 - 1250),
+                    (row_start.0 + 500, row_start.1 - 250),
+                ))
+                .teleport((grid_x + 1000, grid_y - 180)),
+            ),
+            Platform::new((row_start.0 - 700, row_start.1- 850), (150, 75))
+                .color(Color::BLUE)
+                .surface(bouncy),
+                
+        ];
+        platforms.extend(row);
+    }
+
+    {
+        // Final Row
+        let row_start = (grid_x + 1900, grid_y - 11000);
+        let row = vec![
+            Platform::new((row_start.0, row_start.1), (2100, 75)),                
         ];
         platforms.extend(row);
     }
