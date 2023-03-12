@@ -1,3 +1,17 @@
+/* Copyright 2022 Josias Allestad <me@josias.dev> and Jacob <zathaxx@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 use crate::types::*;
 use raylib::prelude::*;
 
@@ -17,8 +31,6 @@ fn default_character(grid_x: i32, grid_y: i32) -> Character {
 pub fn level_one() -> Level {
     let grid_x = 0;
     let grid_y = 0;
-    let default = Surface::new();
-    let transparent = Surface::new().transparent();
     let bouncy = Surface::new().bounciness(0.5);
     let reset = Surface::new().teleport((grid_x + 1000, grid_y - 90));
     let shifting_reset = Surface::new()
